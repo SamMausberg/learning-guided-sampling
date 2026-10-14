@@ -1,4 +1,4 @@
-\subsection{Arbitrary known backgrounds: the worst-case rate}\label{sec:background}
+\subsection{Arbitrary known backgrounds}\label{sec:background}
 The geometry of the background determines how many light prefix groups are available. Accounting for that geometry gives a sharp worst-case extension of Theorem~\ref{thm:local-rate}.
 
 Let $Q_{\mathrm{atom}}(n,M,\alpha,\delta)$ be the supremum of
@@ -7,7 +7,7 @@ Let $Q_{\mathrm{atom}}(n,M,\alpha,\delta)$ be the supremum of
 \]
 over known backgrounds $\nu$ on $\bits^n$ and known sets $S$ of $M$ distinct atoms. Thus $\nu$, $S$, and $\alpha$ are available without guide queries.
 
-\begin{theorem}[Unknown atom over a known background]\label{thm:background}
+\begin{theorem}[Unknown atom, known background]\label{thm:background}
 For $n\ge1$, $2\le M\le2^n$, $0<\alpha\le1/4$, and $0\le\delta\le\alpha/4$,
 \begin{equation}\label{eq:background-rate}
  Q_{\mathrm{atom}}(n,M,\alpha,\delta)
@@ -18,7 +18,7 @@ The upper bound holds for exact sampling from every such class. The lower bound 
 \end{theorem}
 In particular, for fixed $\alpha>0$ the worst-case rate is $\Theta_\alpha(1+\min\{M,n\})$. Single-atom classes therefore cannot witness a superlinear fixed-error lower bound in the string length.
 
-\begin{lemma}[A partition computable from the background]\label{lem:background-partition}
+\begin{lemma}[Background partition]\label{lem:background-partition}
 Let $R,C\ge1$, $a=1-\alpha$, and $\tau=\alpha^2/(2RCa)$. There is a known partition of the candidates into $G$ prefix groups, each either of background mass at most $\tau$ or a single leaf, with
 \begin{equation}\label{eq:partition-count}
  G\le \min\left\{M,\ 1+\sum_{t=0}^{n-1}\min\{2^t,\tau^{-1}\}\right\}.

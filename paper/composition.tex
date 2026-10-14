@@ -1,5 +1,5 @@
-\section{Certificates after a difficult sampling task}\label{sec:composition}
-The small spike can be placed after any pointwise-guided sampling problem. This preserves the reliability constants and transfers that problem's fixed-error sampling cost. The certificate obstruction therefore persists alongside that sampling cost. For outer and inner distributions $\nu,\sigma$ with guides $g,h$, define
+\section{Composition}\label{sec:composition}
+The small spike can be placed after any pointwise-guided sampling problem. This preserves the reliability constants and transfers that problem's fixed-error sampling cost. The certificate lower bound of Theorem~\ref{thm:main} carries over. For outer and inner distributions $\nu,\sigma$ with guides $g,h$, define
 \begin{equation}\label{eq:composition-guide}
  \mu=\nu\otimes\sigma,\qquad
  H(u)=g(u)\ (|u|\le d),\qquad H(xv)=\nu(x)h(v)\ (|x|=d).
@@ -54,7 +54,7 @@ For the upper bound in~\eqref{eq:composition-sampling}, sample $\nu$ to error $\
 For certification, fix $\nu$ and $g$ publicly instead. Every query to $H$ is simulated by at most one equality query about $\theta$. At each prefix $x\theta$, a valid correction needs mass at least $\nu(x)d_m$. Summing over outer leaves, it needs mass at least $d_m$ on the set of strings whose inner key is $\theta$. Those sets are disjoint for different keys. The all-negative transcript thus certifies at most $\lfloor B/d_m\rfloor$ untested keys, proving~\eqref{eq:composition-cert}. For the upper bound, identify $\nu$ with at most $|\mathcal P|-1$ distinguishing queries at depth $d$. Choose a known positive-mass outer leaf, identify the inner key with at most $M-1$ queries, and return $\nu\otimes d_m\delta_{x_\theta}$.
 \end{proof}
 
-\begin{corollary}[Fixed-error sampling with an exponential certificate cost]\label{cor:fixed-cert}
+\begin{corollary}[Exponential certificate cost]\label{cor:fixed-cert}
 For all sufficiently large $m$, there is a full-support class on $4m+2$ bits, of logarithmic cardinality $\Theta(m)$, and a specified family of safe guides with $R=C=9/4$, for which
 \[
  Q_\otimes(\mathcal P,m,1/16)=\widetilde\Theta(m^{3/2}),
@@ -72,4 +72,4 @@ Take the class of Theorem~\ref{pw-thm:parameter} on $d=m$ bits, with the paramet
 Apply Theorem~\ref{thm:composition} and use $\alpha\le1/32$. Its upper bound is at most $Q_{\mathrm{pw}}(\mathcal P,1/32)$, which is $O(m^{3/2}\log(2m))$ by~\cite[Theorem 3.2]{gmr} at error $1/32$. The lower bound is $\Omega(m^{3/2}/\sqrt{\log(2m)})$. The total length is $m+(3m+2)$ and the class has between $4^m$ and $4^m e^m$ members. The certificate bounds follow from $M-1\le q\le M+e^m-2$ for certainty and $d_m\ge\alpha/2$ for fixed $B$.
 \end{proof}
 
-The inner component is negligible at fixed sampling accuracy. The certificate lower bound concerns a requirement imposed before sampling; the outer task accounts for the fixed-error sampling lower bound.
+The fixed-error sampling lower bound comes from the outer task; the inner component, which carries the certificate cost, is negligible at fixed sampling accuracy.

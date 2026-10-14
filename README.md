@@ -13,7 +13,7 @@ The paper studies sampling from an unknown member of a known class of at most `M
 on `{0,1}^n`. The only information about the target is an approximate guide to its prefix
 masses, and every guide query is charged.
 
-- Under pointwise guidance with a constant factor, the worst-case query complexity is
+- Under pointwise guidance with factor 9/4 and error 1/16, the worst-case query complexity is
   `min{M, n√(log M), n²}` up to logarithmic factors. The lower bound reuses one hidden table
   across output blocks and allows arbitrary prefix queries.
 - A guide that is only one-sided safe with bounded stopped reciprocal capacity can make a
@@ -49,7 +49,7 @@ masses, and every guide query is charged.
 
 The finite-class upper bound of Golowich, Moitra and Rohatgi (arXiv:2606.11437, Theorem 3.2) is
 used in Theorem 1.1 and Corollary 5.3. It enters the formalization as an explicit hypothesis and
-is the only result not proved there. The [Lean map](formalization/README.md) lists the coverage
+is the only external result assumed there. The [Lean map](formalization/README.md) lists the coverage
 statement by statement.
 
 ## Building

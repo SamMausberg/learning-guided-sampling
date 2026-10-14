@@ -1,7 +1,7 @@
 import LearningGuided.Sec4.Capacity
 
 /-!
-# Equality access and the exact sampling caps (Theorem `thm:main`, sampling part)
+# Safe and pointwise sampling caps (Theorem `thm:main`, sampling part)
 
 * Every query to `h_θ` is simulated by one equality test of a key (`equality_hθ`).
 * `eq:search-lower`: a `δ`-accurate safe sampler has `q ≥ α(M-1) - δM`.

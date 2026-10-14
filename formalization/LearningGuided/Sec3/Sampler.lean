@@ -1,9 +1,9 @@
 import LearningGuided.Sec3.Prelim
 
 /-!
-# Search only as often as the output law requires
+# Search with thinning
 
-The generic sampler of Section 3 ("Search only as often as the output law requires"). Known
+The generic sampler of Section 3 ("Search with thinning"). Known
 prefix groups are indexed by `Fin G`. A uniformly shifted cyclic block of `q` consecutive group
 indices is chosen, so that every group is included with probability `q/G`. The algorithm queries
 these groups until a test passes. On a hit it flips a coin with success probability `c`, and on

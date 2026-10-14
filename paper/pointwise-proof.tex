@@ -1,5 +1,5 @@
-\section{The pointwise characterization}\label{app:pointwise}
-This appendix proves the lower bound, including the simulation of arbitrary prefix queries. Here $Q(n,M)=Q_{\mathrm{pw}}(n,M,1/16)$ and
+\section{Proof of the pointwise characterization}\label{app:pointwise}
+This appendix proves Theorem~\ref{thm:pointwise}, including the simulation of arbitrary prefix queries for the lower bound. Here $Q(n,M)=Q_{\mathrm{pw}}(n,M,1/16)$ and
 \begin{equation}\label{eq:pw-model}
  (4/9)\mu(u)\le h(u)\le(9/4)\mu(u),\qquad h(x)=\mu(x)\quad(|x|=n).
 \end{equation}
@@ -17,7 +17,7 @@ q>2^{-16}(\ell-1)r^2.
 The same lower bound holds on $\bits^n$ for every $n\ge N$.
 \end{theorem}
 
-\subsection{A table reused across output blocks}\label{pw-sec:construction}
+\subsection{The hard class}\label{pw-sec:construction}
 
 Fix the parameters of Theorem~\ref{pw-thm:parameter}, and set
 \[
@@ -78,7 +78,7 @@ $e^{4/9}\ge1+4/9+(4/9)^2/2=125/81>3/2$.
 The probability is therefore at least $3/5$.
 \end{proof}
 
-\subsubsection{A fixed approximate-prefix oracle}
+\subsubsection{The oracle}
 
 Set $h_\theta(\emptyset)=1$. For a nonempty prefix $u$, parse its first bit as $a$, followed by $t$ complete blocks and a possibly empty partial block $v$, with $|v|<d$. Let
 \[
@@ -141,7 +141,7 @@ For a fully specified address and an all-ones partial string $s$, the common blo
 Zero masses agree in every case. Combining the local factor at most $5/3$ with~\eqref{pw-eq:tail-ratio} gives the factor $20/9<9/4$. At a complete string $t=r$ and $v=\emptyset$, formula~\eqref{pw-eq:h-boundary} is precisely~\eqref{pw-eq:target}.
 \end{proof}
 
-\subsection{What an arbitrary prefix query can reveal}\label{pw-sec:search}
+\subsection{Simulating prefix queries}\label{pw-sec:search}
 
 A long prefix can specify special blocks in several rows. We bound such queries by giving the algorithm a stronger oracle.
 
@@ -162,7 +162,7 @@ Collect the demanded equalities. There are at most $r$, since a nonempty partial
 For the remaining list, a failure means that a factor of the queried mass is zero. If every guess succeeds, the batch reveals every label needed to calculate the product $P$ and the possible final special factor. The coefficients $A_\circ$ and $Z$ are known and instance-independent. This computes the exact oracle answer. The additional individual labels and the identity of the first failed guess only give the batch algorithm more information.
 \end{proof}
 
-\subsubsection{The cost of discovering rows}
+\subsubsection{Discovering rows}
 
 A row is called discovered when its label has been reported following a successful location test. For an undiscovered row, let $f_{a,j}$ be the number of distinct excluded locations.
 
@@ -201,7 +201,7 @@ which is the conditional probability of failure. Tests whose outcomes were alrea
 There is at most one failure per batch. Summing the conditional inequalities over the at most $qr$ elementary tests, including only active tests in a stopped process, gives $\E_b\Phi\le q$. The first term in~\eqref{pw-eq:potential} now proves~\eqref{pw-eq:discoveries}.
 \end{proof}
 
-\subsection{A stopped information bound}\label{pw-sec:information}
+\subsection{An information bound}\label{pw-sec:information}
 
 Let $T_b$ be the full enhanced transcript under $B=b$, including the random seed. We next show that few batches leave the two transcript laws close. Stopping is needed because a nearly complete fixed-weight label table can reveal $B$ with certainty.
 
@@ -267,7 +267,7 @@ a contradiction. The class size and oracle validity were already proved.
 To extend from $N$ to $n\ge N$, append deterministic zeros to every target string. For a prefix of length at most $N$, retain the old oracle. For a longer prefix, return the old exact leaf probability when its padding bits are all zero, and return zero otherwise. This is legal, exact at the new leaves, and every new query can be simulated with at most one old query. Taking the first $N$ output bits cannot increase total variation distance.
 \end{proof}
 
-\subsection{Dependence on string length and class size}\label{pw-sec:parameters}
+\subsection{Choice of parameters}\label{pw-sec:parameters}
 
 \subsubsection{The exponential-size regime}
 
@@ -314,7 +314,7 @@ Fix the random seed and run the algorithm on a reference map that is $1/2$ on no
 Validity requires this average to be at least $1/2-1/16=7/16$, so $q\ge7S/16-1$. For $S\ge4$ this is at least $3S/16$. For $S=2,3$, zero queries are impossible: two of the targets have total variation distance $1/2$, and no single output law is within $1/16$ of both. Thus $q\ge1\ge3S/16$ also in these cases.
 \end{proof}
 
-\subsubsection{Optimizing the table construction}
+\subsubsection{Proof of the lower bound}
 
 \begin{proof}[Lower bound in Theorem~\ref{thm:pointwise}]
 Write $H=\log M$ and $L=\log(2n)$. Suppose first that $n\ge1024$, and define
@@ -343,7 +343,7 @@ K(n,M)/L\le n\sqrt H/L<16n/\sqrt L\le16n,
 and the same lemma again suffices. Finally, for $2\le n<1024$, one has $Q(n,M)\ge1$ and $K(n,M)\le n^2$, so reducing the universal constant covers this finite range of $n$, uniformly in $M$.
 \end{proof}
 
-\subsubsection{Upper bounds and deterministic caps}
+\subsubsection{Upper bounds}
 
 \begin{proposition}\label{pw-prop:upper}
 For every $n,M\ge2$,

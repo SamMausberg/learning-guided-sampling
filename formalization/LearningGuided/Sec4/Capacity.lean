@@ -2,7 +2,7 @@ import LearningGuided.Sec4.HardFamily
 import LearningGuided.Sec2.PublicCapacity
 
 /-!
-# Lemma `lem:capacity`: regularity and the two exact budgets
+# Lemma `lem:capacity`: properties of the hard guide
 
 The guide `h_θ` is positive, level-normalized, exact at leaves, satisfies `h ≤ 2μ` and
 `h(ub) ≤ 2h(u)`, has stopped reciprocal capacity exactly `C_m = 2 + α - 2α² - α³ + α⁴ ≤ 17/8`,

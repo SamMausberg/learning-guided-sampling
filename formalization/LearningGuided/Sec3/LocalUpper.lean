@@ -1,7 +1,7 @@
 import LearningGuided.Sec3.Common
 
 /-!
-# Local access from the guide itself: the class `𝓕_{n,k,α}` and its sampler
+# Sampling an unknown atom: the class `𝓕_{n,k,α}` and its sampler
 
 Section 3 of the paper (`local-access.tex`), upper bounds:
 

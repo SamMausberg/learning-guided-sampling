@@ -166,7 +166,7 @@ theorem tv_atomTarget {ν : Str n → ℝ} {α : ℝ} (hα : 0 ≤ α) {x x' : S
 
 /-! ### One-query membership tests -/
 
-/-- `lem:local-test`: a mass gap makes membership observable. If a known prefix group either
+/-- `lem:local-test` (membership test). If a known prefix group either
 contains a hidden component of mass `α > 0` (so `μ(u) ≥ α`) or contains none of it (so `μ(u)` is
 a known number `b`), and `h(u) ≤ R μ(u)`, `μ(u)² ≤ C h(u)`, `C > 0`, `R b < α²/C`, then the group
 contains the component exactly when `h(u) ≥ α²/C`. -/

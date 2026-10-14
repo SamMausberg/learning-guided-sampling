@@ -1,7 +1,7 @@
 import LearningGuided.PointwiseLB.Affinity
 
 /-!
-# The stopped information bound via the Hellinger affinity
+# The information bound via the Hellinger affinity
 
 This file replaces the KL chain rule and Pinsker's inequality of Lemma `pw-lem:information` by
 the Hellinger affinity, which gives a slightly better constant.

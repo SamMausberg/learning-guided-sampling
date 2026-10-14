@@ -1,5 +1,5 @@
-\section{A separation on the same class at fixed error}\label{sec:fixed-class}
-The pointwise and safe models can have very different costs on a specified class, even when the accuracy and reliability constants are fixed. The construction distributes a heavy background over sixteen prefix subtrees. A safe guide can conceal the atom along a long path inside one subtree. Pointwise accuracy makes the relevant comparisons observable.
+\section{A fixed-error separation}\label{sec:fixed-class}
+The pointwise and safe models can have very different costs on a specified class, even when the accuracy and reliability constants are fixed. The construction distributes a heavy background over sixteen prefix subtrees. A safe guide can conceal the atom along a long path inside one subtree. Under pointwise accuracy, one query decides whether a prefix on that path contains the atom.
 
 \begin{theorem}[Fixed-error separation]\label{thm:fixed-class}
 For every integer $\ell\ge1$, there is a known class $\mathcal H_\ell$ of $M=16\ell$ full-support distributions on $n=\ell+4$ bits such that
@@ -16,7 +16,7 @@ The safe lower bounds use fixed positive guides with $h\le(4/3)\mu$ and stopped 
 
 For these parameters, $K(n,M)=\Theta(\ell)$. Thus the safe lower bound agrees with the worst-case pointwise benchmark, while exceeding the pointwise cost of this particular class exponentially.
 
-\begin{lemma}[Public answers on selected prefixes]\label{lem:public-capacity}
+\begin{lemma}[Public prefixes]\label{lem:public-capacity}
 Let $\nu$ have full support, let $\mu_x=(1-\alpha)\nu+\alpha\delta_x$, with $0<\alpha\le1/4$, and let $\mathcal B$ be any set of proper prefixes. Set $h_x(u)=\nu(u)$ for $u\in\mathcal B$ and $h_x(u)=\mu_x(u)$ elsewhere. Then $h_x\le(4/3)\mu_x$, the leaves are exact, and, writing $a=1-\alpha$,
 \begin{equation}\label{eq:public-capacity}
  \CC(\mu_x,h_x)=\max\left\{1,\ 

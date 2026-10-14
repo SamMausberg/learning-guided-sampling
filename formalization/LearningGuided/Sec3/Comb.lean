@@ -1,7 +1,7 @@
 import LearningGuided.Sec3.LocalLower
 
 /-!
-# Proposition `prop:comb`: the background can prevent coarse search
+# Proposition `prop:comb`: dependence on the background
 
 `n = M`, `ν = (3/4)δ_{0^n} + (1/4)U_n`, atoms `x_j = 0^{j-1}10^{n-j}`. The hard guides answer
 every proper all-zero prefix with `ν(u)` and every other word exactly. They are pointwise

@@ -1,7 +1,7 @@
-\section{A self-contained quadratic upper bound}\label{app:branching}
+\section{A quadratic upper bound}\label{app:branching}
 Poisson tree particle filters have unbiased unnormalized estimators~\cite[Section 3 and Proposition 4.1]{poisson}. Golowich, Chen, Rohatgi, et al.~\cite[Appendix E]{rrr} analyze an independent-offspring formulation in their inference model. We give the complete argument for the present prefix oracle. It uses absolute guide masses and includes extinction, normalization, and a deterministic query cap.
 
-\begin{theorem}[Branching with an explicit cap]\label{thm:branching}
+\begin{theorem}[Poisson branching]\label{thm:branching}
 Let $n\ge1$. Suppose $h(\emptyset)=1$, $h$ has the same support as $\mu$ at every prefix, and its leaves are exact. Let public finite bounds $A,B$ satisfy
 \begin{equation}\label{eq:branch-moments}
  \sum_{t=0}^{n-1}\sum_{|u|=t}h(u)\le A,
@@ -46,7 +46,6 @@ Consequently the untruncated output law satisfies
  \le\frac12\sqrt{\Var(T/P)}
  \le\frac12\sqrt{B/P}\le\frac\delta2.
 \]
-The extinction branch is included in this bound.
 
 The expected total number of queries is at most $2PA$. Abort before making query $q+1$ and return the fixed fallback. Markov's inequality bounds this event by $2PA/q\le\delta/2$. Coupling capped and uncapped executions adds at most $\delta/2$ to their output distance. Thus the cap in~\eqref{eq:branch-cap} includes every call in successful, extinct, and aborted trees.
 

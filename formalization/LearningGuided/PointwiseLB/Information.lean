@@ -1,7 +1,7 @@
 import LearningGuided.PointwiseLB.Hellinger
 
 /-!
-# The stopped information bound (Lemma `pw-lem:information`)
+# The information bound (Lemma `pw-lem:information`)
 
 For every test tree with failure budget `q` (in particular every converted algorithm with cap
 `q`), put `η = q/((ℓ-1)W)`. Under the hard prior with root `b` (uniform on the valid tables with

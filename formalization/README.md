@@ -94,9 +94,10 @@ Numbers refer to the compiled PDF. All names are in the namespace `LearningGuide
 **The only external input.** It is the finite-class upper bound of Golowich, Moitra and Rohatgi
 (arXiv:2606.11437, Theorem 3.2). It enters as the explicit hypothesis `Upper.GMRUpperBoundAt δ`,
 at `δ = 1/16` for Theorem 1.1 and at `δ = 1/32` for Corollary 5.3. It is never an axiom. Every
-other statement is proved without hypotheses beyond the paper's own.
+other theorem, lemma, proposition and corollary is proved without hypotheses beyond the paper's
+own.
 
-**Where proofs depart from the text.** The statements are unchanged in each case.
+**Where proofs depart from the text.** The statements are unchanged, apart from the form of Lemma B.8 noted in the table.
 - **Lemma B.8.** The proof bounds the Hellinger affinity of the two transcript laws and applies Le
   Cam's inequality, where the paper uses the KL chain rule and Pinsker's inequality. It gives
   `TV ≤ 8√η + 16η`, which implies the paper's `8√η + 32η`.

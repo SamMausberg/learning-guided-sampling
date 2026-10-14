@@ -1,0 +1,34 @@
+{
+  "status": "passed",
+  "arithmetic": "fractions.Fraction except asymptotic geometry grid",
+  "counts": {
+    "mixed_depth_capacity_identities": 188,
+    "arbitrary_prefix_equality_checks": 4048,
+    "fixed_error_pointwise_executions": 21504,
+    "fixed_error_full_laws": 1344,
+    "fixed_error_safe_caps": 672,
+    "enumerated_algorithm_executions": 56908,
+    "complete_output_laws": 1728,
+    "checked_output_coordinates": 110448,
+    "independent_branching_moment_recursions": 84,
+    "full_product_capacity_identities": 256,
+    "coherent_repair_instances": 72,
+    "geometry_parameter_checks": 40704,
+    "pointwise_background_full_laws": 252,
+    "candidate_balanced_light_groups": 1536,
+    "pointwise_geometry_checks": 12672,
+    "pointwise_comb_guide_checks": 149,
+    "detected_seed_reuse_mutants": 1
+  },
+  "geometry_ratio_range": [
+    0.5,
+    1.4426950408889636
+  ],
+  "pointwise_geometry_ratio_range": [
+    0.36639874054322885,
+    0.7213475204444817
+  ],
+  "biased_seed_reuse_total_variation": "3/16",
+  "elapsed_seconds": 7.735,
+  "scope": "Finite executable checks only; no formal proof or independent human review."
+}

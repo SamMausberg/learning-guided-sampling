@@ -1,0 +1,29 @@
+cff-version: 1.2.0
+message: "Please cite the manuscript and identify the repository commit used. No arXiv identifier or DOI has been assigned yet."
+title: "Learning-guided sampling: finite classes and one-sided reliability"
+type: software
+authors:
+  - family-names: Mausberg
+    given-names: Samuel
+date-released: "2026-10-14"
+repository-code: "https://github.com/SamMausberg/learning-guided-sampling"
+url: "https://github.com/SamMausberg/learning-guided-sampling"
+license: MIT
+keywords:
+  - sampling
+  - query complexity
+  - prefix oracles
+  - finite classes
+  - certificates
+  - Lean 4
+preferred-citation:
+  type: unpublished
+  title: "Learning-guided sampling: finite classes and one-sided reliability"
+  authors:
+    - family-names: Mausberg
+      given-names: Samuel
+  year: 2026
+  month: 10
+  license: CC-BY-4.0
+  notes: "Unpublished manuscript. Identify the repository commit used."
+  url: "https://github.com/SamMausberg/learning-guided-sampling"

@@ -1,0 +1,68 @@
+\section{A separation on the same class at fixed error}\label{sec:fixed-class}
+The pointwise and safe models can have very different costs on a specified class, even when the accuracy and reliability constants are fixed. The construction distributes a heavy background over sixteen prefix subtrees. A safe guide can conceal the atom along a long path inside one subtree. Pointwise accuracy makes the relevant comparisons observable.
+
+\begin{theorem}[Fixed-error separation]\label{thm:fixed-class}
+For every integer $\ell\ge1$, there is a known class $\mathcal H_\ell$ of $M=16\ell$ full-support distributions on $n=\ell+4$ bits such that
+\begin{align}
+ Q_{\mathrm{pw}}(\mathcal H_\ell,1/16)
+   &=\Theta(\log(2+\ell)),
+ &Q_{\mathrm{pw}}(\mathcal H_\ell,0)
+   &\le4+\lceil\log_2\ell\rceil,\label{eq:fixed-point}\\
+ Q_{\mathrm{safe}}(\mathcal H_\ell,1/16)&=3\ell,
+ &Q_{\mathrm{safe}}(\mathcal H_\ell,0)&=4\ell.\label{eq:fixed-safe}
+\end{align}
+The safe lower bounds use fixed positive guides with $h\le(4/3)\mu$ and stopped reciprocal capacity at most $263/120<9/4$.
+\end{theorem}
+
+For these parameters, $K(n,M)=\Theta(\ell)$. Thus the safe lower bound agrees with the worst-case pointwise benchmark, while exceeding the pointwise cost of this particular class exponentially.
+
+\begin{lemma}[Public answers on selected prefixes]\label{lem:public-capacity}
+Let $\nu$ have full support, let $\mu_x=(1-\alpha)\nu+\alpha\delta_x$, with $0<\alpha\le1/4$, and let $\mathcal B$ be any set of proper prefixes. Set $h_x(u)=\nu(u)$ for $u\in\mathcal B$ and $h_x(u)=\mu_x(u)$ elsewhere. Then $h_x\le(4/3)\mu_x$, the leaves are exact, and, writing $a=1-\alpha$,
+\begin{equation}\label{eq:public-capacity}
+ \CC(\mu_x,h_x)=\max\left\{1,\ 
+ \max_{\substack{u\in\mathcal B\\u\preceq x}}
+ \left(1+\alpha-2\alpha^2-a\alpha\nu(u)
+                    +\frac{\alpha^2}{\nu(u)}\right)\right\}.
+\end{equation}
+An empty inner maximum is omitted.
+\end{lemma}
+\begin{proof}
+Safety follows from $a\nu\le\mu_x$. Complete a prefix-free set with uncovered leaves. Off the path to $x$, the node contribution $\mu_x(u)^2/h_x(u)$ is at most $\mu_x(u)$, so replacing that node by its descendant leaves does not decrease the sum. The remaining cut either consists of exact nodes, with value one, or selects one public ancestor $u$ of $x$ and all leaves outside it. Its value is $1-\mu_x(u)+\mu_x(u)^2/\nu(u)$. Substituting $\mu_x(u)=a\nu(u)+\alpha$ gives~\eqref{eq:public-capacity}. Each displayed value is attained by that cut.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:fixed-class}]
+For $y\in\bits^4$ and $1\le j\le\ell$, put
+\[
+ x_{y,j}=y0^{j-1}10^{\ell-j},\qquad
+ \nu=\frac{15}{16}(U_4\otimes\delta_{0^\ell})+\frac1{16}U_n,
+ \qquad \mu_{y,j}=\frac34\nu+\frac14\delta_{x_{y,j}}.
+\]
+These $16\ell$ targets form $\mathcal H_\ell$. Use the guide of Lemma~\ref{lem:public-capacity}, with public answers at every prefix of length at most four and at each proper prefix $y0^t$. Every such ancestor of an atom has $\nu(u)\ge15/256$. Since $\alpha=1/4$,
+\[
+ \CC(\mu_{y,j},h_{y,j})
+ \le\frac98+\frac{(1/4)^2}{15/256}
+ =\frac{263}{120}<\frac94.
+\]
+Every other query is either a complete string $y0^\ell$, whose exact answer is public because every atom contains a one, or specifies the four-bit word $y$ and a first-one position in its suffix. Its answer is public unless that pair equals the hidden $(y,j)$. It is simulated by one equality test, including complete-string queries. Fixing the random seed and following all negative answers shows that $q$ tests predict a uniform pair with probability at most $(q+1)/(16\ell)$: at most $q$ pairs are tested, and the common negative transcript can guess one more. On the other hand, $\delta$-accurate sampling gives
+\[
+ \Prb(X=x_{y,j})\ge\frac14+\frac{3}{64\,2^n}-\delta.
+\]
+Consequently
+\begin{equation}\label{eq:fixed-equality}
+ q\ge16\ell\left(\frac14-\delta+\frac{3}{64\,2^n}\right)-1.
+\end{equation}
+The positive last term and integrality give $q\ge3\ell$ at $\delta=1/16$ and $q\ge4\ell$ at $\delta=0$. For matching caps, test a uniformly selected set of $q$ distinct candidate leaves. On a hit output that atom; otherwise draw independently from $\nu$. The output law is $(1-q/M)\nu+(q/M)\delta_{x_{y,j}}$. Taking $q=3\ell$ or $q=4\ell$ proves~\eqref{eq:fixed-safe} for every legal guide.
+
+Now consider any pointwise factor-$9/4$ guide. At a prefix $y0^t$, $0\le t<\ell$, the background mass lies between $15/256$ and $1/16$. If the prefix excludes the atom, then
+\[
+ h(y0^t)\le\frac94\frac34\frac1{16}=\frac{27}{256}<\frac18.
+\]
+If it contains the atom, then
+\[
+ h(y0^t)\ge\frac49\left(\frac34\frac{15}{256}+\frac14\right)
+ =\frac{301}{2304}>\frac18.
+\]
+Select four of the sixteen four-bit groups with equal inclusion probability $1/4$. Query them until a hit. Within a hit group, a query to $y0^t$ tests exactly whether $j>t$, so binary search recovers $j$ in at most $\lceil\log_2\ell\rceil$ further calls. Output the atom on a hit, and an independent $\nu$ draw otherwise. The atom branch has probability $1/4$, giving the exact target law with the cap in~\eqref{eq:fixed-point}.
+
+For its lower bound choose the legal guide $h=\mu_{y,j}$. Each prefix has at most two answers over the $M$ targets. A fixed-seed depth-$q$ decision tree has at most $2^q$ transcripts and predicts a uniform pair with probability at most $2^q/M$. At error $1/16$, this forces $2^q>3\ell$. Averaging over the seed proves the same bound for randomized algorithms.
+\end{proof}

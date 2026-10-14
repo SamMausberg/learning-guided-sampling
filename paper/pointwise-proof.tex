@@ -1,0 +1,367 @@
+\section{The pointwise characterization}\label{app:pointwise}
+This appendix proves the lower bound, including the simulation of arbitrary prefix queries. Here $Q(n,M)=Q_{\mathrm{pw}}(n,M,1/16)$ and
+\begin{equation}\label{eq:pw-model}
+ (4/9)\mu(u)\le h(u)\le(9/4)\mu(u),\qquad h(x)=\mu(x)\quad(|x|=n).
+\end{equation}
+A table with $r^2$ rows hides each label behind one of $\ell$ locations. Reusing the table in $r$ output blocks gives length about $r\ell$, logarithmic class size $O(r^2\log\ell)$, and query cost $\Omega(r^2\ell)$.
+
+\begin{theorem}[Parameterized lower bound]\label{pw-thm:parameter}
+Let $r\ge8$ be a power of two and let $\ell\ge2$ be an integer. Put
+\[
+N=1+r(2\log_2r+\ell),\qquad M_0=2(2\ell)^{2r^2}.
+\]
+There is a class of at most $M_0$ distributions on $\bits^N$, with one fixed legal oracle for each distribution, on which every sampler with error at most $1/16$ on every instance has query cap
+\begin{equation}\label{pw-eq:parameter}
+q>2^{-16}(\ell-1)r^2.
+\end{equation}
+The same lower bound holds on $\bits^n$ for every $n\ge N$.
+\end{theorem}
+
+\subsection{A table reused across output blocks}\label{pw-sec:construction}
+
+Fix the parameters of Theorem~\ref{pw-thm:parameter}, and set
+\[
+W=r^2,\qquad k=\log_2W=2\log_2r,\qquad d=k+\ell,
+\qquad m_\pm=W/2\pm r.
+\]
+An instance $\theta$ consists of a bit $B$, two location tables
+$I_{a,j}\in[\ell]$, and two label tables $Y_{a,j}\in\bits$, where $a\in\bits$ and $j\in[W]$. The label table at root $B$ has exactly $m_+$ ones; the other has exactly $m_-$ ones.
+
+For the hard prior, $B$ is uniform. Conditional on $B$, the two label tables are independently uniform among vectors of their specified weights. All $2W$ locations are independent and uniform on $[\ell]$, independently of the labels and $B$.
+
+Use $k$ bits to encode a row $j\in[W]$. Among the $\ell$-bit strings, define
+\[
+c=1^\ell,\qquad s_i=1^{i-1}0^{\ell-i+1}\quad(i\in[\ell]).
+\]
+A block is a pair $z=(j,s)$ of a row address and an $\ell$-bit string. Define its weight at root $a$ by
+\begin{equation}\label{pw-eq:block}
+w_a(j,s)=
+\begin{cases}
+1,&s=c,\\
+1+Y_{a,j}/2,&s=s_{I_{a,j}},\\
+0,&\text{otherwise}.
+\end{cases}
+\end{equation}
+Write
+\begin{equation}\label{pw-eq:normalizers}
+A_\pm=2W+\frac{m_\pm}{2}=\frac{9W}{4}\pm\frac r2,
+\qquad A_\circ=\frac{9W}{4},\qquad Z=A_+^r+A_-^r.
+\end{equation}
+For a given instance, let $A_a=A_+$ when $a=B$, and $A_a=A_-$ otherwise. Indeed, $\sum_z w_a(z)=A_a$.
+
+For a complete string $x=(a,z_1,\ldots,z_r)$ of length $N=1+rd$, set
+\begin{equation}\label{pw-eq:target}
+\mu_\theta(x)=\frac1Z\prod_{t=1}^r w_a(z_t).
+\end{equation}
+The total weight is $Z$, so this is a distribution. Conditional on its first bit, its blocks are independent. They use identical weights from one reused table.
+
+\begin{lemma}\label{pw-lem:size-root}
+The number of targets is at most $2(2\ell)^{2W}$, and every target satisfies
+\begin{equation}\label{pw-eq:rootgap}
+\mu_\theta(X_1=B)\ge\frac35.
+\end{equation}
+The normalizer $Z$ is independent of the instance.
+\end{lemma}
+\begin{proof}
+The parameter count is
+\[
+2\binom{W}{m_+}\binom{W}{m_-}\ell^{2W}
+\le 2(2\ell)^{2W}.
+\]
+A target determines its tables: holding all but one block at common strings exposes each weight $w_a(j,s)$ through~\eqref{pw-eq:target}. Thus distinct parameter instances give distinct targets. Both root normalizers occur once in $Z$, regardless of $B$ and the table contents. The odds of the first bit being $B$ are
+\[
+\left(\frac{A_+}{A_-}\right)^r
+=\left(\frac{1+2/(9r)}{1-2/(9r)}\right)^r.
+\]
+The inequality $\log((1+x)/(1-x))\ge2x$ for $0\le x<1$ gives a logarithm of at least $4/9$. Finally,
+$e^{4/9}\ge1+4/9+(4/9)^2/2=125/81>3/2$.
+The probability is therefore at least $3/5$.
+\end{proof}
+
+\subsubsection{A fixed approximate-prefix oracle}
+
+Set $h_\theta(\emptyset)=1$. For a nonempty prefix $u$, parse its first bit as $a$, followed by $t$ complete blocks and a possibly empty partial block $v$, with $|v|<d$. Let
+\[
+P=\prod_{b=1}^t w_a(z_b).
+\]
+If $P=0$, set $h_\theta(u)=0$. Otherwise use the following definitions.
+
+At a block boundary, set
+\begin{equation}\label{pw-eq:h-boundary}
+h_\theta(u)=P A_\circ^{r-t}/Z\qquad(v=\emptyset).
+\end{equation}
+For a nonempty partial address $v$ with $|v|<k$, let $J=2^{k-|v|}$ be its number of compatible rows, and set
+\begin{equation}\label{pw-eq:h-address}
+h_\theta(u)=P\left(\frac94J\right)A_\circ^{r-t-1}/Z.
+\end{equation}
+When $|v|\ge k$, write $v=(j,s)$ with $|s|<\ell$, allowing $s=\emptyset$. Define
+\begin{equation}\label{pw-eq:local}
+g_a(j,s)=
+\begin{cases}
+3/2,&s=1^{|s|},\\
+1+Y_{a,j}/2,&s=1^{i-1}0^{|s|-i+1}\text{ for some }i\le|s|,\ I_{a,j}=i,\\
+0,&\text{otherwise},
+\end{cases}
+\end{equation}
+and set
+\begin{equation}\label{pw-eq:h-comb}
+h_\theta(u)=P g_a(j,s)A_\circ^{r-t-1}/Z.
+\end{equation}
+The dependence of $g_a$ on $\theta$ is implicit, as in $w_a$. These formulas define one map before any interaction takes place.
+
+\begin{lemma}[Oracle validity]\label{pw-lem:oracle}
+For every instance and every prefix,
+\[
+\frac9{20}\mu_\theta(u)\le h_\theta(u)\le\frac{20}9\mu_\theta(u).
+\]
+At complete strings $h_\theta=\mu_\theta$. Hence the oracle satisfies~\eqref{eq:pw-model}.
+\end{lemma}
+\begin{proof}
+Let $b_a(v)$ be the sum of weights of blocks extending the partial block $v$. The exact prefix mass is
+\begin{equation}\label{pw-eq:prefix-exact}
+\mu_\theta(u)=
+\begin{cases}
+P A_a^{r-t}/Z,&v=\emptyset,\\
+P b_a(v)A_a^{r-t-1}/Z,&v\ne\emptyset.
+\end{cases}
+\end{equation}
+For $x=2/(9r)\le1/9$ and $0\le s\le r$,
+\[
+r\log(1+x)\le 2/9,
+\qquad -r\log(1-x)\le\frac{rx}{1-x}\le1/4.
+\]
+Since $e^{1/4}<4/3$, it follows that
+\begin{equation}\label{pw-eq:tail-ratio}
+\frac34\le (A_\circ/A_a)^s\le\frac43.
+\end{equation}
+For an incomplete address, $2J\le b_a(v)\le(5/2)J$. Replacing it by $(9/4)J$ changes it by a multiplicative factor at most $9/8$ in either direction.
+
+For a fully specified address and an all-ones partial string $s$, the common block is always compatible. The special block is either also compatible or already excluded. Consequently, the exact local mass is one of $1,2,5/2$. The value $3/2$ approximates it within a factor $5/3$. For a partial string containing a zero, the local mass is exactly the second or third case of~\eqref{pw-eq:local}.
+
+Zero masses agree in every case. Combining the local factor at most $5/3$ with~\eqref{pw-eq:tail-ratio} gives the factor $20/9<9/4$. At a complete string $t=r$ and $v=\emptyset$, formula~\eqref{pw-eq:h-boundary} is precisely~\eqref{pw-eq:target}.
+\end{proof}
+
+\subsection{What an arbitrary prefix query can reveal}\label{pw-sec:search}
+
+A long prefix can specify special blocks in several rows. We bound such queries by giving the algorithm a stronger oracle.
+
+\begin{definition}[First-failure batch oracle]\label{pw-def:batch}
+A batch specifies an ordered list of at most $r$ guesses of the form $I_{a,j}=i$. The oracle tests them in order. A success reports the corresponding label $Y_{a,j}$. The first failure is reported and ends the batch. If all guesses succeed, all corresponding labels are reported. Previously learned information remains available to the algorithm.
+\end{definition}
+
+Thus one batch can expose several labels. Its cost is one, regardless of its length.
+
+\begin{lemma}[Simulation]\label{pw-lem:simulation}
+Every query to $h_\theta$ can be answered using at most one batch, with no additional access to the hidden instance. This includes queries to complete strings.
+\end{lemma}
+\begin{proof}
+Parse the query as in Appendix~\ref{pw-sec:construction}. A complete common block has known weight one. A complete block with a zero either has the form $s_i$ and demands the equality $I_{a,j}=i$, or has weight zero for every instance. A partial block with a zero behaves in the same way. A partial address or an all-ones partial block has the fixed coefficient in~\eqref{pw-eq:h-address} or~\eqref{pw-eq:local}.
+
+Collect the demanded equalities. There are at most $r$, since a nonempty partial block leaves at most $r-1$ complete blocks. Repeated consistent guesses for a row can be combined; two different guesses for one row force the answer to be zero. Invalid string patterns also force zero. Guesses already decided by the transcript require no test.
+
+For the remaining list, a failure means that a factor of the queried mass is zero. If every guess succeeds, the batch reveals every label needed to calculate the product $P$ and the possible final special factor. The coefficients $A_\circ$ and $Z$ are known and instance-independent. This computes the exact oracle answer. The additional individual labels and the identity of the first failed guess only give the batch algorithm more information.
+\end{proof}
+
+\subsubsection{The cost of discovering rows}
+
+A row is called discovered when its label has been reported following a successful location test. For an undiscovered row, let $f_{a,j}$ be the number of distinct excluded locations.
+
+\begin{lemma}[Conditional law]\label{pw-lem:posterior}
+Fix $B=b$ and condition on an enhanced transcript. The locations of undiscovered rows are independent and uniform on their remaining locations. They are independent of the remaining labels. If table $a$ has exposed $t_a$ labels, of which $s_a$ equal one, then its remaining labels are uniform subject to having $m_{a,b}-s_a$ ones, where $m_{a,b}=m_+$ for $a=b$ and $m_-$ otherwise.
+\end{lemma}
+\begin{proof}
+First fix the internal randomness. For a fixed transcript, every query and the order of tests are fixed. Its consistency conditions specify, in each row, either an exact discovered location or a set of excluded locations. Separately they specify the labels at discovered rows. The prior on locations is a product measure, independent of the two fixed-weight label measures. Thus the event defining the transcript factors into location constraints and observed-label constraints. Conditioning gives the asserted laws. Restoring the independent random seed in the transcript leaves the argument unchanged.
+\end{proof}
+
+\begin{lemma}[Search potential]\label{pw-lem:search}
+For any adaptive algorithm making at most $q$ batches, let $D$ be its number of discovered rows. Under either value of $B$,
+\begin{equation}\label{pw-eq:discoveries}
+\E_b D\le\frac{2q}{\ell-1}.
+\end{equation}
+The same bound holds if the process is stopped partway through a batch.
+\end{lemma}
+\begin{proof}
+Consider the nonnegative potential
+\begin{equation}\label{pw-eq:potential}
+\Phi=\frac{\ell-1}{2}D+
+\frac12\sum_{\text{undiscovered }(a,j)}f_{a,j}.
+\end{equation}
+Initially it is zero. Suppose a fresh guess is made in an undiscovered row with $f$ excluded locations, leaving $d'=\ell-f$ possibilities. By Lemma~\ref{pw-lem:posterior}, success has conditional probability $1/d'$. On success the potential increases by
+\[
+\frac{\ell-1}{2}-\frac f2=\frac{d'-1}{2}.
+\]
+On failure it increases by $1/2$. Its conditional expected increase is therefore
+\[
+\frac1{d'}\frac{d'-1}{2}
++\frac{d'-1}{d'}\frac12
+=\frac{d'-1}{d'},
+\]
+which is the conditional probability of failure. Tests whose outcomes were already known give no new information and have potential increment zero, still bounded in expectation by their failure probability.
+
+There is at most one failure per batch. Summing the conditional inequalities over the at most $qr$ elementary tests, including only active tests in a stopped process, gives $\E_b\Phi\le q$. The first term in~\eqref{pw-eq:potential} now proves~\eqref{pw-eq:discoveries}.
+\end{proof}
+
+\subsection{A stopped information bound}\label{pw-sec:information}
+
+Let $T_b$ be the full enhanced transcript under $B=b$, including the random seed. We next show that few batches leave the two transcript laws close. Stopping is needed because a nearly complete fixed-weight label table can reveal $B$ with certainty.
+
+\begin{lemma}\label{pw-lem:information}
+For every algorithm with batch cap $q$, put
+\[
+\eta=\frac{q}{(\ell-1)W}.
+\]
+Then
+\begin{equation}\label{pw-eq:transcript}
+\TV(T_0,T_1)\le8\sqrt{\eta}+32\eta.
+\end{equation}
+\end{lemma}
+\begin{proof}
+Stop the process immediately upon its $L=W/8$-th discovery, or when it otherwise ends. Let $T_b^*$ denote this stopped transcript. Before a new label is revealed, let $t$ be the number of previously discovered labels in its table, and $s$ the number of their ones. Here $t<L$. By Lemma~\ref{pw-lem:posterior}, the label has success probabilities, in some order under the two hypotheses,
+\[
+p=\frac{m_+-s}{W-t},\qquad p'=\frac{m_--s}{W-t}.
+\]
+For $r\ge8$, $m_\pm\in[3W/8,5W/8]$. Since $t\le W/8$ and $0\le s\le t$, both probabilities lie in $[1/4,3/4]$, and
+\begin{equation}\label{pw-eq:prob-diff}
+|p-p'|=\frac{2r}{W-t}\le\frac{16}{7r}<\frac3r.
+\end{equation}
+The elementary inequality $\log x\le x-1$ implies
+\[
+\KL(\Ber(p)\Vert\Ber(p'))
+\le\frac{(p-p')^2}{p'(1-p')}
+\le\frac{48}{W}\le\frac{64}{W}.
+\]
+All location-test outcomes have identical conditional probabilities under the two hypotheses at a common history. Only newly revealed labels contribute divergence. The chain rule, followed by Lemma~\ref{pw-lem:search}, gives
+\begin{equation}\label{pw-eq:kl-stopped}
+\KL(T_0^*\Vert T_1^*)
+\le\frac{64}{W}\E_0D^*
+\le\frac{128q}{(\ell-1)W}=128\eta.
+\end{equation}
+All stopped histories have common support: any assignment to at most $W/8$ exposed labels in either table is compatible with both fixed weights. The random seed contributes zero initial divergence.
+
+Pinsker's inequality gives $\TV(T_0^*,T_1^*)\le8\sqrt\eta$. By Markov's inequality and Lemma~\ref{pw-lem:search}, under each hypothesis the probability that the stopping threshold is reached is at most
+\[
+\frac{\E_bD}{L}\le16\eta.
+\]
+Full and stopped transcripts agree outside this event. Formally, embed stopped transcripts in the full transcript space by padding the unrevealed continuation with a fixed cemetery symbol. Coupling each full process to its stopped version and using the triangle inequality adds at most $16\eta$ for each hypothesis. This proves~\eqref{pw-eq:transcript}.
+\end{proof}
+
+For completeness, the information inequalities used above have elementary finite-space proofs. The chain rule follows by writing a joint likelihood ratio as the product of its conditional likelihood ratios and taking expectations. To obtain Pinsker's inequality, take the event $E$ on which one mass function exceeds the other and apply the log-sum inequality to $E$ and its complement. The resulting divergence between $\Ber(p)$ and $\Ber(p')$ is at least $2(p-p')^2$: its second derivative with respect to $p$ is $1/[p(1-p)]\ge4$, and it and its first derivative vanish at $p=p'$. Thus $\KL(P\Vert Q)\ge2\TV(P,Q)^2$. Conditioning on the independent random seed gives the same statements for randomized algorithms.
+
+\begin{proof}[Proof of Theorem~\ref{pw-thm:parameter}]
+Use the known class from Appendix~\ref{pw-sec:construction} and its fixed oracles. If a sampler were valid on every instance, its first output bit would satisfy
+\[
+\Pp_\theta(X_1=B)\ge\frac35-\frac1{16}
+=\frac12+\frac3{80}
+\]
+for every $\theta$, by Lemma~\ref{pw-lem:size-root}. This remains true after averaging over the hard prior. Hence the first output bit would distinguish the uniform bit $B$ with success at least $1/2+3/80$.
+
+For any two transcript laws, the success of a test of a uniform bit is at most $(1+\TV(T_0,T_1))/2$. This follows directly by applying the definition of total variation to the event on which the test outputs zero. Thus the sampler would require transcript distance at least $3/40$.
+
+Lemma~\ref{pw-lem:simulation} simulates its queries with the same cap in the stronger model. If $q\le2^{-16}(\ell-1)W$, Lemma~\ref{pw-lem:information} instead gives
+\[
+\TV(T_0,T_1)\le\frac8{256}+\frac{32}{65536}
+=\frac{65}{2048}<\frac3{40},
+\]
+a contradiction. The class size and oracle validity were already proved.
+
+To extend from $N$ to $n\ge N$, append deterministic zeros to every target string. For a prefix of length at most $N$, retain the old oracle. For a longer prefix, return the old exact leaf probability when its padding bits are all zero, and return zero otherwise. This is legal, exact at the new leaves, and every new query can be simulated with at most one old query. Taking the first $N$ output bits cannot increase total variation distance.
+\end{proof}
+
+\subsection{Dependence on string length and class size}\label{pw-sec:parameters}
+
+\subsubsection{The exponential-size regime}
+
+For sufficiently large $n$, let $r$ be the largest power of two at most
+\[
+\sqrt{\frac{n}{4\log(2n)}},
+\qquad
+\ell=\left\lfloor\frac{n-1}{r}\right\rfloor-2\log_2r.
+\]
+Then $r\ge8$, $N\le n$, and
+\begin{equation}\label{pw-eq:expn-parameters}
+r\ge\frac14\sqrt{\frac{n}{\log(2n)}},
+\qquad \ell-1\ge\frac{n}{2r}.
+\end{equation}
+For the second inequality, observe that $r\le n/[16\log(2n)]$ once $n\ge64\log(2n)$, while $2\log_2r\le3\log(2n)$. The floor loses less than $1+1/r$, and these bounds give the claim.
+
+Moreover,
+\[
+\log M_0\le\log2+2r^2\log(2n)\le\log2+n/2.
+\]
+This is smaller than $\log\lfloor e^n\rfloor$ for all sufficiently large $n$. Theorem~\ref{pw-thm:parameter} and~\eqref{pw-eq:expn-parameters} give the lower bound in~\eqref{eq:pw-expn}. The finite-class upper bound gives its other side.
+
+\subsubsection{A small-class lower bound}
+
+We include the comb argument from the small-class part of~\cite[Theorem 4.12]{gmr}, with root value one and its cap made explicit.
+
+\begin{lemma}\label{pw-lem:comb}
+For every $n,M\ge2$,
+\[
+Q(n,M)\ge\frac3{16}\min\{M,n\}.
+\]
+\end{lemma}
+\begin{proof}
+Put $S=\min\{M,n\}$. For $0\le i<S$, set $v_i=1^i0^{n-i}$ and let $v_n=1^n$. Define
+\[
+\mu_i=\tfrac12\delta_{v_i}+\tfrac12\delta_{v_n}.
+\]
+The oracle is $1/2$ on nonempty prefixes of either support string and zero elsewhere; set its value at the empty prefix to one. It is exact at leaves and is a factor-two approximation.
+
+Fix the random seed and run the algorithm on a reference map that is $1/2$ on nonempty all-ones prefixes and zero elsewhere, with value one at the empty prefix. Every query off this common path can test at most one index $i$. If an index is never tested, the true oracle gives exactly the reference transcript. Consequently, among the $S$ targets, at most $q$ can have a different transcript, and the single reference output can equal $v_i$ for at most one further index. Averaging over uniform $i$ and then over the seed gives
+\[
+\Pp(X=v_i)\le\frac{q+1}{S}.
+\]
+Validity requires this average to be at least $1/2-1/16=7/16$, so $q\ge7S/16-1$. For $S\ge4$ this is at least $3S/16$. For $S=2,3$, zero queries are impossible: two of the targets have total variation distance $1/2$, and no single output law is within $1/16$ of both. Thus $q\ge1\ge3S/16$ also in these cases.
+\end{proof}
+
+\subsubsection{Optimizing the table construction}
+
+\begin{proof}[Lower bound in Theorem~\ref{thm:pointwise}]
+Write $H=\log M$ and $L=\log(2n)$. Suppose first that $n\ge1024$, and define
+\[
+R_* = \min\left\{\sqrt{\frac{H}{4L}},\frac{n}{16L}\right\}.
+\]
+When $R_*\ge8$, take $r$ to be the largest power of two at most $R_*$ and let
+\[
+\ell=\left\lfloor\frac{n-1}{r}\right\rfloor-2\log_2r.
+\]
+As above, $N\le n$ and $\ell-1\ge n/(2r)$. Also $H\ge256L$, so
+\[
+\log M_0\le\log2+2r^2L\le\log2+H/2\le H.
+\]
+Since $r\ge R_*/2$, Theorem~\ref{pw-thm:parameter} yields
+\begin{equation}\label{pw-eq:optimized}
+Q(n,M)\ge c_0\min\left\{n\sqrt{\frac{H}{L}},\frac{n^2}{L}\right\}
+\ge\frac{c_0}{L}K(n,M)
+\end{equation}
+for an absolute constant $c_0>0$.
+
+When $R_*<8$, the inequality $n/(16L)\ge8$ for $n\ge1024$ implies $H<256L$. If $M\le n$, Lemma~\ref{pw-lem:comb} immediately suffices. If $M>n$, then
+\[
+K(n,M)/L\le n\sqrt H/L<16n/\sqrt L\le16n,
+\]
+and the same lemma again suffices. Finally, for $2\le n<1024$, one has $Q(n,M)\ge1$ and $K(n,M)\le n^2$, so reducing the universal constant covers this finite range of $n$, uniformly in $M$.
+\end{proof}
+
+\subsubsection{Upper bounds and deterministic caps}
+
+\begin{proposition}\label{pw-prop:upper}
+For every $n,M\ge2$,
+\begin{equation}\label{pw-eq:upper}
+Q(n,M)\le\min\left\{M-1,\ c_3n\sqrt{\log M}\log(2+\log M),\ c_3n^2\right\}
+\end{equation}
+for an absolute constant $c_3$.
+\end{proposition}
+\begin{proof}
+For exact identification, maintain the candidates consistent with all queried leaf values. Whenever two distinct distributions remain, choose a leaf where their probabilities differ and query it. At least one candidate is eliminated. After at most $M-1$ queries, the remaining candidates are one distribution, from which sampling is free.
+
+For the second bound, apply~\cite[Theorem 3.2]{gmr} with ratio $9/4$, binary alphabet, and error $1/16$. Its stated guarantee already bounds the number of queries on every execution; its proof implements the cap using a query tail bound.
+
+The last bound follows from Theorem~\ref{thm:branching}, since a pointwise factor-$9/4$ guide satisfies safety and stopped capacity with $R=C=9/4$.
+\end{proof}
+
+\begin{proof}[Upper bound in Theorem~\ref{thm:pointwise}]
+If $K(n,M)=M$, use the first bound in~\eqref{pw-eq:upper}. If $K(n,M)=n^2$, use its last bound. In the remaining case $K(n,M)=n\sqrt{\log M}$, so $\log M\le n^2$ and $\log(2+\log M)=O(\log(2n))$. The middle bound in~\eqref{pw-eq:upper} then proves~\eqref{eq:pw-main}. A singleton class needs no oracle calls.
+\end{proof}
+
+

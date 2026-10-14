@@ -1,0 +1,852 @@
+{
+  "status": "passed",
+  "forbidden_tokens": [],
+  "modules_missing_from_root": [],
+  "build_returncode": 0,
+  "declarations_checked": 3123,
+  "declarations_with_nonstandard_axioms": 0,
+  "theorems_citing_paper_labels": 251,
+  "distinct_paper_labels_cited": 81,
+  "unknown_labels": [],
+  "labelled_theorems": {
+    "LearningGuided.Branching.Qcx_safe_le_branchQ": [
+      "thm:branching"
+    ],
+    "LearningGuided.Branching.Qpw_le_sq": [
+      "pw-prop:upper"
+    ],
+    "LearningGuided.Branching.Qsafe_le_sq": [
+      "thm:branching"
+    ],
+    "LearningGuided.Branching.SafeLegal.branchHyp": [
+      "thm:branching"
+    ],
+    "LearningGuided.Branching.SafeLegal.moment_A": [
+      "thm:branching"
+    ],
+    "LearningGuided.Branching.SafeLegal.moment_B": [
+      "thm:branching"
+    ],
+    "LearningGuided.Branching.abort_le": [
+      "thm:branching"
+    ],
+    "LearningGuided.Branching.branchQ_pw": [
+      "pw-prop:upper"
+    ],
+    "LearningGuided.Branching.branchQ_safe_le": [
+      "thm:branching"
+    ],
+    "LearningGuided.Branching.branchQ_safe_le_O": [
+      "thm:branching"
+    ],
+    "LearningGuided.Branching.branch_tree_queries": [
+      "thm:branching"
+    ],
+    "LearningGuided.Branching.branch_unbiased": [
+      "eq:branch-unbiased"
+    ],
+    "LearningGuided.Branching.branch_var": [
+      "thm:branching"
+    ],
+    "LearningGuided.Branching.branching": [
+      "thm:branching",
+      "eq:branch-cap",
+      "eq:branch-moments"
+    ],
+    "LearningGuided.Branching.branching_pw_solves": [
+      "pw-prop:upper"
+    ],
+    "LearningGuided.Branching.branching_safe_solves": [
+      "thm:branching"
+    ],
+    "LearningGuided.Branching.expect_count_le": [
+      "thm:branching"
+    ],
+    "LearningGuided.Branching.expect_count_word": [
+      "thm:branching"
+    ],
+    "LearningGuided.Branching.expect_dev_sq": [
+      "thm:branching"
+    ],
+    "LearningGuided.Branching.expect_leafCount": [
+      "thm:branching"
+    ],
+    "LearningGuided.Branching.expect_total": [
+      "thm:branching"
+    ],
+    "LearningGuided.Branching.expect_total_mul_outLaw": [
+      "thm:branching"
+    ],
+    "LearningGuided.Branching.expect_total_sq": [
+      "thm:branching"
+    ],
+    "LearningGuided.Branching.martingale_increment": [
+      "thm:branching"
+    ],
+    "LearningGuided.Branching.martingale_step": [
+      "thm:branching"
+    ],
+    "LearningGuided.Branching.tv_branchU_le": [
+      "thm:branching"
+    ],
+    "LearningGuided.Branching.tv_branchU_le_half": [
+      "thm:branching"
+    ],
+    "LearningGuided.Branching.var_total_div": [
+      "thm:branching"
+    ],
+    "LearningGuided.Branching.within_branchAlg": [
+      "eq:branch-cap"
+    ],
+    "LearningGuided.CapLE.sq_le": [
+      "lem:local-test"
+    ],
+    "LearningGuided.Frontier.frontier": [
+      "app:frontier"
+    ],
+    "LearningGuided.Frontier.frontier_stages": [
+      "app:frontier"
+    ],
+    "LearningGuided.Frontier.frontier_tv": [
+      "app:frontier",
+      "eq:oracle",
+      "eq:capacity-model"
+    ],
+    "LearningGuided.Frontier.frontier_tv_sharp": [
+      "app:frontier"
+    ],
+    "LearningGuided.Frontier.lawR_produceA_succ": [
+      "app:frontier"
+    ],
+    "LearningGuided.Frontier.run_learnA_budget": [
+      "app:frontier"
+    ],
+    "LearningGuided.Frontier.run_trialA_some_eq": [
+      "app:frontier"
+    ],
+    "LearningGuided.Frontier.stage_none_le": [
+      "app:frontier"
+    ],
+    "LearningGuided.Frontier.stopMass_le_of_light": [
+      "app:frontier"
+    ],
+    "LearningGuided.Frontier.stop_sq_le": [
+      "app:frontier"
+    ],
+    "LearningGuided.Frontier.sum_wgt": [
+      "app:frontier"
+    ],
+    "LearningGuided.Frontier.tv_learnA_le": [
+      "app:frontier"
+    ],
+    "LearningGuided.Frontier.tv_nu_mu": [
+      "app:frontier"
+    ],
+    "LearningGuided.Frontier.tv_produceA_le": [
+      "app:frontier"
+    ],
+    "LearningGuided.Frontier.tv_produceA_nu": [
+      "app:frontier"
+    ],
+    "LearningGuided.Frontier.two_mul_card_update_lt": [
+      "app:frontier"
+    ],
+    "LearningGuided.Frontier.update_mem": [
+      "app:frontier"
+    ],
+    "LearningGuided.Frontier.within_frontierAlg": [
+      "app:frontier"
+    ],
+    "LearningGuided.Main.cor_fixed_cert_instance": [
+      "cor:fixed-cert",
+      "app:pointwise"
+    ],
+    "LearningGuided.Main.fixed_gap": [
+      "sec:remaining",
+      "eq:fixed-gap",
+      "app:frontier",
+      "thm:branching"
+    ],
+    "LearningGuided.Main.qpw_upper_of_gmr": [
+      "cor:fixed-cert"
+    ],
+    "LearningGuided.Main.thm_pointwise": [
+      "thm:pointwise",
+      "eq:pw-main",
+      "eq:pw-expn"
+    ],
+    "LearningGuided.Main.thm_pointwise_lower_Q": [
+      "thm:pointwise",
+      "eq:pw-main",
+      "eq:pw-expn"
+    ],
+    "LearningGuided.PointwiseLB.Comb.pw_lem_comb": [
+      "pw-lem:comb"
+    ],
+    "LearningGuided.PointwiseLB.Prm.advantage_bound": [
+      "pw-thm:parameter",
+      "pw-lem:information"
+    ],
+    "LearningGuided.PointwiseLB.Prm.avg_eq_val": [
+      "pw-lem:posterior"
+    ],
+    "LearningGuided.PointwiseLB.Prm.bc_le_affinity": [
+      "pw-lem:information"
+    ],
+    "LearningGuided.PointwiseLB.Prm.card_fiber": [
+      "pw-lem:posterior"
+    ],
+    "LearningGuided.PointwiseLB.Prm.card_label": [
+      "pw-lem:posterior"
+    ],
+    "LearningGuided.PointwiseLB.Prm.card_targetClass_le": [
+      "pw-lem:size-root"
+    ],
+    "LearningGuided.PointwiseLB.Prm.discoveries_alg": [
+      "pw-lem:search",
+      "pw-eq:discoveries"
+    ],
+    "LearningGuided.PointwiseLB.Prm.discoveries_le": [
+      "pw-eq:discoveries"
+    ],
+    "LearningGuided.PointwiseLB.Prm.discoveries_root": [
+      "pw-eq:discoveries"
+    ],
+    "LearningGuided.PointwiseLB.Prm.eta_small": [
+      "pw-thm:parameter"
+    ],
+    "LearningGuided.PointwiseLB.Prm.gloc_eq_locMass": [
+      "pw-lem:oracle"
+    ],
+    "LearningGuided.PointwiseLB.Prm.information": [
+      "pw-lem:information"
+    ],
+    "LearningGuided.PointwiseLB.Prm.information_tt": [
+      "pw-lem:information",
+      "pw-eq:transcript"
+    ],
+    "LearningGuided.PointwiseLB.Prm.information_tv": [
+      "pw-lem:information",
+      "pw-eq:transcript"
+    ],
+    "LearningGuided.PointwiseLB.Prm.length_guesses_le": [
+      "pw-lem:simulation"
+    ],
+    "LearningGuided.PointwiseLB.Prm.locMass_allOnes_bounds": [
+      "pw-lem:oracle"
+    ],
+    "LearningGuided.PointwiseLB.Prm.mass_target": [
+      "pw-eq:prefix-exact"
+    ],
+    "LearningGuided.PointwiseLB.Prm.one_sub_bcRec_le": [
+      "pw-lem:information"
+    ],
+    "LearningGuided.PointwiseLB.Prm.oracle_bounds": [
+      "pw-lem:oracle"
+    ],
+    "LearningGuided.PointwiseLB.Prm.oracle_factor": [
+      "pw-lem:simulation"
+    ],
+    "LearningGuided.PointwiseLB.Prm.oracle_leaf": [
+      "pw-lem:oracle"
+    ],
+    "LearningGuided.PointwiseLB.Prm.oracle_pwLegal": [
+      "pw-lem:oracle",
+      "eq:pw-model"
+    ],
+    "LearningGuided.PointwiseLB.Prm.padOracle_pwLegal": [
+      "pw-thm:parameter"
+    ],
+    "LearningGuided.PointwiseLB.Prm.parameter_N": [
+      "pw-thm:parameter"
+    ],
+    "LearningGuided.PointwiseLB.Prm.parameter_pad": [
+      "pw-thm:parameter"
+    ],
+    "LearningGuided.PointwiseLB.Prm.parameter_smooth": [
+      "cor:fixed-cert"
+    ],
+    "LearningGuided.PointwiseLB.Prm.potential": [
+      "pw-lem:search"
+    ],
+    "LearningGuided.PointwiseLB.Prm.pw_thm_parameter": [
+      "pw-thm:parameter"
+    ],
+    "LearningGuided.PointwiseLB.Prm.pw_thm_parameter_N": [
+      "pw-thm:parameter"
+    ],
+    "LearningGuided.PointwiseLB.Prm.root_gap": [
+      "pw-eq:rootgap"
+    ],
+    "LearningGuided.PointwiseLB.Prm.root_mass_ge": [
+      "pw-lem:size-root",
+      "pw-eq:rootgap"
+    ],
+    "LearningGuided.PointwiseLB.Prm.run_conv": [
+      "pw-lem:simulation"
+    ],
+    "LearningGuided.PointwiseLB.Prm.smooth_class_lower": [
+      "cor:fixed-cert"
+    ],
+    "LearningGuided.PointwiseLB.Prm.stair_pattern_iff": [
+      "pw-eq:local"
+    ],
+    "LearningGuided.PointwiseLB.Prm.tail_ratio_minus": [
+      "pw-eq:tail-ratio"
+    ],
+    "LearningGuided.PointwiseLB.Prm.tail_ratio_plus": [
+      "pw-eq:tail-ratio"
+    ],
+    "LearningGuided.PointwiseLB.Prm.target_injective": [
+      "pw-lem:size-root"
+    ],
+    "LearningGuided.PointwiseLB.Prm.within_conv": [
+      "pw-lem:simulation"
+    ],
+    "LearningGuided.PointwiseLB.Regimes.choose_params": [
+      "pw-sec:parameters",
+      "pw-eq:expn-parameters"
+    ],
+    "LearningGuided.PointwiseLB.Regimes.pw_expn_lower": [
+      "eq:pw-expn"
+    ],
+    "LearningGuided.PointwiseLB.Regimes.pw_main_lower": [
+      "thm:pointwise",
+      "eq:pw-main"
+    ],
+    "LearningGuided.PointwiseLB.Regimes.thm_pointwise_lower": [
+      "thm:pointwise",
+      "eq:pw-main",
+      "eq:pw-expn"
+    ],
+    "LearningGuided.PointwiseLB.cor_fixed_cert_smoothed_lower": [
+      "cor:fixed-cert"
+    ],
+    "LearningGuided.PointwiseLB.expn_smooth": [
+      "cor:fixed-cert"
+    ],
+    "LearningGuided.PointwiseLB.kl_bernoulli_le": [
+      "pw-lem:information"
+    ],
+    "LearningGuided.PointwiseLB.kl_bernoulli_numeric": [
+      "pw-lem:information"
+    ],
+    "LearningGuided.PointwiseLB.pad_pwLegal": [
+      "pw-thm:parameter"
+    ],
+    "LearningGuided.PointwiseLB.smoothT_pos": [
+      "cor:fixed-cert"
+    ],
+    "LearningGuided.PointwiseLB.smooth_pwLegal": [
+      "cor:fixed-cert"
+    ],
+    "LearningGuided.PointwiseLB.smooth_root": [
+      "cor:fixed-cert"
+    ],
+    "LearningGuided.PointwiseLB.thm_pointwise_expn_lower": [
+      "thm:pointwise",
+      "eq:pw-expn"
+    ],
+    "LearningGuided.PointwiseLB.thm_pointwise_lower": [
+      "thm:pointwise",
+      "eq:pw-main",
+      "eq:pw-expn"
+    ],
+    "LearningGuided.PointwiseLB.thm_pointwise_main_lower": [
+      "thm:pointwise",
+      "eq:pw-main"
+    ],
+    "LearningGuided.Sec2.Krate_fixed": [
+      "thm:fixed-class",
+      "eq:K"
+    ],
+    "LearningGuided.Sec2.classF_props": [
+      "thm:fixed-class"
+    ],
+    "LearningGuided.Sec2.equality_hardF": [
+      "thm:fixed-class"
+    ],
+    "LearningGuided.Sec2.fixed_binary": [
+      "thm:fixed-class"
+    ],
+    "LearningGuided.Sec2.fixed_equality": [
+      "thm:fixed-class",
+      "eq:fixed-equality"
+    ],
+    "LearningGuided.Sec2.fixed_point_binary": [
+      "thm:fixed-class"
+    ],
+    "LearningGuided.Sec2.fixed_point_exact": [
+      "thm:fixed-class",
+      "eq:fixed-point"
+    ],
+    "LearningGuided.Sec2.fixed_point_theta": [
+      "thm:fixed-class",
+      "eq:fixed-point"
+    ],
+    "LearningGuided.Sec2.fixed_safe": [
+      "thm:fixed-class",
+      "eq:fixed-safe"
+    ],
+    "LearningGuided.Sec2.hardF_props": [
+      "thm:fixed-class",
+      "eq:public-capacity"
+    ],
+    "LearningGuided.Sec2.lawR_pwSearchF": [
+      "thm:fixed-class",
+      "eq:fixed-point"
+    ],
+    "LearningGuided.Sec2.lawR_safeSearchF": [
+      "thm:fixed-class"
+    ],
+    "LearningGuided.Sec2.lem_public_capacity": [
+      "lem:public-capacity",
+      "eq:public-capacity"
+    ],
+    "LearningGuided.Sec2.probe_test": [
+      "thm:fixed-class"
+    ],
+    "LearningGuided.Sec2.pubCap_of_empty": [
+      "lem:public-capacity",
+      "eq:public-capacity"
+    ],
+    "LearningGuided.Sec2.pubCap_of_nonempty": [
+      "lem:public-capacity",
+      "eq:public-capacity"
+    ],
+    "LearningGuided.Sec2.thm_fixed_class": [
+      "thm:fixed-class",
+      "eq:fixed-point",
+      "eq:fixed-safe"
+    ],
+    "LearningGuided.Sec3.QatomPw_rate": [
+      "eq:background-pointwise"
+    ],
+    "LearningGuided.Sec3.Qatom_rate": [
+      "thm:background",
+      "eq:background-rate"
+    ],
+    "LearningGuided.Sec3.arbitrary_locations": [
+      "prop:arbitrary-locations",
+      "eq:capacity-model"
+    ],
+    "LearningGuided.Sec3.background_lower": [
+      "thm:background"
+    ],
+    "LearningGuided.Sec3.background_partition": [
+      "lem:background-partition",
+      "eq:partition-count",
+      "eq:capacity-model",
+      "eq:background-cap"
+    ],
+    "LearningGuided.Sec3.background_pointwise": [
+      "prop:background-pointwise",
+      "thm:background"
+    ],
+    "LearningGuided.Sec3.background_pw_lower": [
+      "prop:background-pointwise"
+    ],
+    "LearningGuided.Sec3.background_pw_upper": [
+      "prop:background-pointwise"
+    ],
+    "LearningGuided.Sec3.background_rate": [
+      "thm:background"
+    ],
+    "LearningGuided.Sec3.background_upper": [
+      "thm:background"
+    ],
+    "LearningGuided.Sec3.bgCap_le_rate": [
+      "thm:background",
+      "eq:background-cap",
+      "eq:partition-count"
+    ],
+    "LearningGuided.Sec3.bg_valid": [
+      "lem:background-partition"
+    ],
+    "LearningGuided.Sec3.blockBg_mass_pub": [
+      "thm:background"
+    ],
+    "LearningGuided.Sec3.blockGuide_pw": [
+      "prop:background-pointwise"
+    ],
+    "LearningGuided.Sec3.blockGuide_safe": [
+      "lem:public-capacity",
+      "thm:background"
+    ],
+    "LearningGuided.Sec3.block_lower": [
+      "thm:background"
+    ],
+    "LearningGuided.Sec3.branch_balance": [
+      "eq:branch-balance"
+    ],
+    "LearningGuided.Sec3.card_block_mem": [
+      "eq:branch-balance"
+    ],
+    "LearningGuided.Sec3.card_heavy_level_le": [
+      "lem:background-partition"
+    ],
+    "LearningGuided.Sec3.card_splitGroups_le": [
+      "eq:partition-count"
+    ],
+    "LearningGuided.Sec3.card_splitGroups_le_heavy": [
+      "lem:background-partition"
+    ],
+    "LearningGuided.Sec3.comb": [
+      "prop:comb"
+    ],
+    "LearningGuided.Sec3.combGuide_capLE": [
+      "prop:comb"
+    ],
+    "LearningGuided.Sec3.combGuide_pwLegal": [
+      "prop:comb"
+    ],
+    "LearningGuided.Sec3.comb_lower": [
+      "prop:comb"
+    ],
+    "LearningGuided.Sec3.comb_search": [
+      "prop:comb"
+    ],
+    "LearningGuided.Sec3.comb_upper": [
+      "prop:comb",
+      "eq:oracle"
+    ],
+    "LearningGuided.Sec3.comb_zero_query": [
+      "prop:comb"
+    ],
+    "LearningGuided.Sec3.eqStructure_comb": [
+      "prop:comb"
+    ],
+    "LearningGuided.Sec3.exists_bal": [
+      "prop:arbitrary-locations"
+    ],
+    "LearningGuided.Sec3.fuel_ok": [
+      "prop:arbitrary-locations"
+    ],
+    "LearningGuided.Sec3.hardSpike_capacity": [
+      "eq:local-hard-capacity"
+    ],
+    "LearningGuided.Sec3.lawR_leafSampler": [
+      "eq:oracle"
+    ],
+    "LearningGuided.Sec3.lawR_partSampler": [
+      "eq:local-output"
+    ],
+    "LearningGuided.Sec3.lawR_spikeSampler_safe": [
+      "eq:local-output"
+    ],
+    "LearningGuided.Sec3.lawR_splitSampler": [
+      "lem:background-partition",
+      "eq:oracle"
+    ],
+    "LearningGuided.Sec3.local_cap": [
+      "eq:local-cap",
+      "eq:resolution"
+    ],
+    "LearningGuided.Sec3.local_information": [
+      "eq:local-information"
+    ],
+    "LearningGuided.Sec3.local_lower": [
+      "thm:local-rate"
+    ],
+    "LearningGuided.Sec3.local_rate": [
+      "thm:local-rate"
+    ],
+    "LearningGuided.Sec3.local_test": [
+      "lem:local-test"
+    ],
+    "LearningGuided.Sec3.local_upper_rate": [
+      "thm:local-rate"
+    ],
+    "LearningGuided.Sec3.pubGuide_capLE": [
+      "lem:public-capacity"
+    ],
+    "LearningGuided.Sec3.pubGuide_le": [
+      "lem:public-capacity"
+    ],
+    "LearningGuided.Sec3.pw_light": [
+      "prop:background-pointwise"
+    ],
+    "LearningGuided.Sec3.pw_regime": [
+      "prop:background-pointwise"
+    ],
+    "LearningGuided.Sec3.pw_test": [
+      "cor:spike-pointwise",
+      "lem:local-test"
+    ],
+    "LearningGuided.Sec3.pw_valid": [
+      "cor:spike-pointwise"
+    ],
+    "LearningGuided.Sec3.run_balRec": [
+      "prop:arbitrary-locations"
+    ],
+    "LearningGuided.Sec3.safe_test": [
+      "lem:local-test"
+    ],
+    "LearningGuided.Sec3.safe_valid": [
+      "lem:local-test"
+    ],
+    "LearningGuided.Sec3.solves_arbSampler": [
+      "prop:arbitrary-locations"
+    ],
+    "LearningGuided.Sec3.solves_leafSampler": [
+      "eq:oracle"
+    ],
+    "LearningGuided.Sec3.solves_pwBgSampler": [
+      "prop:background-pointwise"
+    ],
+    "LearningGuided.Sec3.solves_spikeSampler": [
+      "eq:local-cap"
+    ],
+    "LearningGuided.Sec3.solves_spikeSampler_pw": [
+      "cor:spike-pointwise"
+    ],
+    "LearningGuided.Sec3.spike_information": [
+      "eq:local-information"
+    ],
+    "LearningGuided.Sec3.spike_pointwise": [
+      "cor:spike-pointwise"
+    ],
+    "LearningGuided.Sec3.spike_pointwise_lower": [
+      "cor:spike-pointwise"
+    ],
+    "LearningGuided.Sec3.spike_pointwise_upper": [
+      "cor:spike-pointwise"
+    ],
+    "LearningGuided.Sec3.spike_search": [
+      "eq:local-search"
+    ],
+    "LearningGuided.Sec3.spike_search_min": [
+      "eq:local-search"
+    ],
+    "LearningGuided.Sec3.spike_zero_query": [
+      "thm:local-rate"
+    ],
+    "LearningGuided.Sec3.splitGroup_part": [
+      "lem:background-partition"
+    ],
+    "LearningGuided.Sec3.tv_atomTarget_unif": [
+      "eq:local-output"
+    ],
+    "LearningGuided.Sec3.tv_local_output": [
+      "eq:local-output"
+    ],
+    "LearningGuided.Sec3.two_regime": [
+      "thm:background"
+    ],
+    "LearningGuided.Sec3.within_groupSpike": [
+      "eq:local-cap"
+    ],
+    "LearningGuided.Sec3.within_spikeSampler": [
+      "eq:local-cap"
+    ],
+    "LearningGuided.Sec4.binary_lower": [
+      "eq:binary-lower"
+    ],
+    "LearningGuided.Sec4.capEq_h\u03b8": [
+      "lem:capacity",
+      "eq:capacity-value"
+    ],
+    "LearningGuided.Sec4.cert_certainty": [
+      "thm:main"
+    ],
+    "LearningGuided.Sec4.cert_overlap": [
+      "sec:certification"
+    ],
+    "LearningGuided.Sec4.cert_threshold": [
+      "thm:main"
+    ],
+    "LearningGuided.Sec4.cert_tradeoff": [
+      "thm:main",
+      "eq:cert-tradeoff"
+    ],
+    "LearningGuided.Sec4.cert_upper": [
+      "eq:cert-tradeoff"
+    ],
+    "LearningGuided.Sec4.correction_mass_k": [
+      "lem:capacity"
+    ],
+    "LearningGuided.Sec4.correction_repair": [
+      "sec:construction",
+      "thm:main"
+    ],
+    "LearningGuided.Sec4.defectEq_h\u03b8": [
+      "lem:capacity",
+      "eq:capacity-value"
+    ],
+    "LearningGuided.Sec4.dm_ge_half_alpha": [
+      "eq:fixed-B"
+    ],
+    "LearningGuided.Sec4.dstar": [
+      "eq:dstar"
+    ],
+    "LearningGuided.Sec4.equality_h\u03b8": [
+      "lem:equality"
+    ],
+    "LearningGuided.Sec4.fixed_B": [
+      "thm:main",
+      "eq:fixed-B"
+    ],
+    "LearningGuided.Sec4.h\u03b8_growth": [
+      "lem:capacity"
+    ],
+    "LearningGuided.Sec4.key_test": [
+      "sec:pointwise"
+    ],
+    "LearningGuided.Sec4.lawR_eightSampler": [
+      "sec:pointwise",
+      "thm:main"
+    ],
+    "LearningGuided.Sec4.lem_capacity": [
+      "lem:capacity"
+    ],
+    "LearningGuided.Sec4.level_h\u03b8": [
+      "lem:capacity"
+    ],
+    "LearningGuided.Sec4.point_exact": [
+      "thm:main",
+      "eq:point-exact"
+    ],
+    "LearningGuided.Sec4.point_exact_zero": [
+      "thm:main"
+    ],
+    "LearningGuided.Sec4.safeLegal_h\u03b8": [
+      "lem:capacity",
+      "thm:main"
+    ],
+    "LearningGuided.Sec4.safe_exact": [
+      "thm:main",
+      "eq:safe-exact"
+    ],
+    "LearningGuided.Sec4.search_law": [
+      "eq:search-law",
+      "eq:oracle"
+    ],
+    "LearningGuided.Sec4.search_lower": [
+      "eq:search-lower"
+    ],
+    "LearningGuided.Sec4.thm_main": [
+      "thm:main",
+      "eq:point-exact",
+      "eq:safe-exact",
+      "eq:dstar",
+      "eq:cert-tradeoff"
+    ],
+    "LearningGuided.Sec4.zero_queries": [
+      "thm:main"
+    ],
+    "LearningGuided.Sec5.capLE_prod": [
+      "lem:capacity-concatenation",
+      "thm:composition"
+    ],
+    "LearningGuided.Sec5.capacity_concatenation_iter": [
+      "lem:capacity-concatenation"
+    ],
+    "LearningGuided.Sec5.capacity_concatenation_max": [
+      "lem:capacity-concatenation"
+    ],
+    "LearningGuided.Sec5.composition_budgets": [
+      "thm:composition",
+      "eq:composition-budgets"
+    ],
+    "LearningGuided.Sec5.composition_cert": [
+      "thm:composition",
+      "eq:composition-cert"
+    ],
+    "LearningGuided.Sec5.composition_certainty": [
+      "thm:composition"
+    ],
+    "LearningGuided.Sec5.composition_fixed_B": [
+      "cor:fixed-cert",
+      "eq:composition-cert"
+    ],
+    "LearningGuided.Sec5.composition_sampling": [
+      "thm:composition",
+      "eq:composition-sampling"
+    ],
+    "LearningGuided.Sec5.composition_sampling_lower": [
+      "thm:composition",
+      "eq:composition-sampling"
+    ],
+    "LearningGuided.Sec5.composition_sampling_upper": [
+      "thm:composition",
+      "eq:composition-sampling"
+    ],
+    "LearningGuided.Sec5.cor_fixed_cert": [
+      "cor:fixed-cert",
+      "thm:pointwise",
+      "app:pointwise"
+    ],
+    "LearningGuided.Sec5.cutSum_prod_le": [
+      "lem:capacity-concatenation",
+      "eq:capacity-concatenation"
+    ],
+    "LearningGuided.Sec5.defectEq_prod": [
+      "thm:composition",
+      "eq:composition-budgets"
+    ],
+    "LearningGuided.Sec5.dm_tendsto": [
+      "cor:fixed-cert"
+    ],
+    "LearningGuided.Sec5.isCorrection_prod": [
+      "thm:composition"
+    ],
+    "LearningGuided.Sec5.lem_capacity_concatenation": [
+      "lem:capacity-concatenation",
+      "eq:capacity-concatenation"
+    ],
+    "LearningGuided.Sec5.prodGuide_append": [
+      "eq:composition-guide"
+    ],
+    "LearningGuided.Sec5.prod_min_correction": [
+      "thm:composition"
+    ],
+    "LearningGuided.Sec5.thm_composition": [
+      "thm:composition",
+      "sec:construction",
+      "eq:composition-sampling",
+      "eq:composition-cert",
+      "eq:composition-budgets"
+    ],
+    "LearningGuided.Upper.Qcx_le_sub_one": [
+      "pw-prop:upper"
+    ],
+    "LearningGuided.Upper.Qcx_singleton": [
+      "thm:pointwise"
+    ],
+    "LearningGuided.Upper.exists_solves_finite": [
+      "eq:oracle"
+    ],
+    "LearningGuided.Upper.frontierCap_le": [
+      "app:frontier"
+    ],
+    "LearningGuided.Upper.identAlg_solves": [
+      "pw-prop:upper",
+      "eq:oracle"
+    ],
+    "LearningGuided.Upper.min_rate_le": [
+      "thm:pointwise"
+    ],
+    "LearningGuided.Upper.pw_expn_upper": [
+      "thm:pointwise",
+      "eq:pw-expn",
+      "eq:pw-main"
+    ],
+    "LearningGuided.Upper.pw_main_upper": [
+      "thm:pointwise",
+      "eq:pw-main"
+    ],
+    "LearningGuided.Upper.pw_upper": [
+      "pw-prop:upper",
+      "pw-eq:upper"
+    ],
+    "LearningGuided.Upper.pw_upper_Ln_K": [
+      "eq:pw-main"
+    ],
+    "LearningGuided.Upper.safe_upper_bounds": [
+      "eq:fixed-gap"
+    ],
+    "LearningGuided.equality_counting": [
+      "lem:equality"
+    ]
+  }
+}

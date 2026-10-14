@@ -1,0 +1,92 @@
+\subsection{Arbitrary known backgrounds: the worst-case rate}\label{sec:background}
+The geometry of the background determines how many light prefix groups are available. Accounting for that geometry gives a sharp worst-case extension of Theorem~\ref{thm:local-rate}.
+
+Let $Q_{\mathrm{atom}}(n,M,\alpha,\delta)$ be the supremum of
+\[
+ Q_{\mathrm{safe}}\bigl(\{(1-\alpha)\nu+\alpha\delta_x:x\in S\},\delta\bigr)
+\]
+over known backgrounds $\nu$ on $\bits^n$ and known sets $S$ of $M$ distinct atoms. Thus $\nu$, $S$, and $\alpha$ are available without guide queries.
+
+\begin{theorem}[Unknown atom over a known background]\label{thm:background}
+For $n\ge1$, $2\le M\le2^n$, $0<\alpha\le1/4$, and $0\le\delta\le\alpha/4$,
+\begin{equation}\label{eq:background-rate}
+ Q_{\mathrm{atom}}(n,M,\alpha,\delta)
+ =\Theta\!\left(1+\min\left\{\alpha M,
+             \alpha^{-1}\log(1+2^n\alpha^2)\right\}\right).
+\end{equation}
+The upper bound holds for exact sampling from every such class. The lower bound holds even when the known background has full support. The constants are absolute.
+\end{theorem}
+In particular, for fixed $\alpha>0$ the worst-case rate is $\Theta_\alpha(1+\min\{M,n\})$. Single-atom classes therefore cannot witness a superlinear fixed-error lower bound in the string length.
+
+\begin{lemma}[A partition computable from the background]\label{lem:background-partition}
+Let $R,C\ge1$, $a=1-\alpha$, and $\tau=\alpha^2/(2RCa)$. There is a known partition of the candidates into $G$ prefix groups, each either of background mass at most $\tau$ or a single leaf, with
+\begin{equation}\label{eq:partition-count}
+ G\le \min\left\{M,\ 1+\sum_{t=0}^{n-1}\min\{2^t,\tau^{-1}\}\right\}.
+\end{equation}
+An exact sampler under~\eqref{eq:capacity-model} has deterministic cap
+\begin{equation}\label{eq:background-cap}
+ \min\left\{\lceil\alpha M\rceil,
+        \lceil\alpha G\rceil+\lceil\log_{3/2}M\rceil\right\}.
+\end{equation}
+The partition and all candidate-set operations use only known data.
+\end{lemma}
+\begin{proof}
+Starting at the root, split a prefix when its background mass exceeds $\tau$ and its depth is less than $n$. The leaves of the resulting finite binary tree partition $\bits^n$. At depth $t$ there are at most $\min\{2^t,\tau^{-1}\}$ internal nodes, since their disjoint masses sum to at most one. The number of leaves is one plus the number of internal nodes. Discard groups containing no candidate to obtain~\eqref{eq:partition-count}.
+
+For a light group and every descendant prefix, the background contribution is at most $a\tau$, so Lemma~\ref{lem:local-test} tests atom membership with one query. At a leaf, exactness detects the additional mass $\alpha$. Choose $q=\lceil\alpha G\rceil$ groups with equal inclusion probability $q/G$. On a hit, proceed with probability $\alpha G/q$. Within a light group, balanced prefix tests reduce the remaining candidate count by a factor at most $2/3$ at each step, as in Proposition~\ref{prop:arbitrary-locations}. A leaf group already identifies the atom. Every other branch draws freshly from $\nu$. The atom branch has probability $\alpha$, and its complement has output law $\nu$, proving exactness and the second cap in~\eqref{eq:background-cap}. Direct leaf search proves the first cap.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:background}]
+Write $B=\alpha^{-1}\ge4$ and $z=2^n\alpha^2$. For the upper bound fix $R=C=9/4$. If $z\le1$, leaf search costs at most $1+\alpha M\le1+Bz=O(1+B\log(1+z))$. If $z\ge1$, summing the geometric part and then the constant part in~\eqref{eq:partition-count} gives
+\[
+ G=O\bigl(B^2(1+\log z)\bigr).
+\]
+Moreover $\log_2 M\le n=2\log_2 B+\log_2 z\le B+\log_2 z$. Equation~\eqref{eq:background-cap} therefore bounds the cost by $O(1+B\log(1+z))$, as well as by $1+\alpha M$. This proves the upper bound uniformly, including the transition $z\asymp1$.
+
+For the lower bound, let
+\[
+ d=\min\{n-1,\lfloor\log_2 B^2\rfloor\},\quad
+ H=2^d,\quad \ell=n-d,\quad K=H\ell.
+\]
+Use the full-support background and $K$ possible atom locations
+\[
+ \nu=\frac{15}{16}(U_d\otimes\delta_{0^\ell})+\frac1{16}U_n,
+ \qquad x_{y,j}=y0^{j-1}10^{\ell-j}
+ \quad(y\in\bits^d,\ 1\le j\le\ell).
+\]
+Here $K\le2^n$. Choose any $m=\min\{M,K\}$ of these locations; if $M>K$, add arbitrary distinct strings to make a class of exactly $M$ targets. On the selected $m$ targets use public background answers through depth $d$ and at every proper prefix $y0^t$, with exact answers elsewhere. On any additional targets an exact guide suffices.
+
+Every public ancestor of a selected atom has background mass at least $15/(16H)$. By Lemma~\ref{lem:public-capacity}, safety has factor at most $4/3$, and
+\[
+ \CC(\mu_x,h_x)\le 1+\alpha-2\alpha^2+\frac{16\alpha^2H}{15}
+ \le\frac98+\frac{16}{15}=\frac{263}{120}<\frac94.
+\]
+Every nonpublic query tests at most one pair $(y,j)$. The all-negative transcript argument on the uniform prior over the $m$ selected atoms gives
+\[
+ q\ge m(\alpha-\delta)-1\ge\frac34\alpha m-1.
+\]
+Independently, $q\ge1$: two distinct targets have distance $\alpha>2\delta$. Hence the lower bound is $\Omega(1+\alpha\min\{M,K\})$.
+
+It remains to compare $\alpha K$ with $B\log(1+z)$. When $d=n-1$, one has $z\le2$ and $\alpha K=Bz/2\asymp B\log(1+z)$. Otherwise $B^2/2<H\le B^2$, and $\ell=n-\lfloor\log_2 B^2\rfloor$ differs from $\log_2 z$ by less than one. Since $\ell\ge1$, this again gives $\alpha K\asymp B\log(1+z)$. The constants are uniform. Taking the minimum with $\alpha M$ proves~\eqref{eq:background-rate}.
+\end{proof}
+
+\begin{proposition}[Pointwise counterpart]\label{prop:background-pointwise}
+Define $Q_{\mathrm{atom,pw}}$ by replacing $Q_{\mathrm{safe}}$ with $Q_{\mathrm{pw}}$ in the definition of $Q_{\mathrm{atom}}$. Under the parameter assumptions of Theorem~\ref{thm:background},
+\begin{equation}\label{eq:background-pointwise}
+ Q_{\mathrm{atom,pw}}(n,M,\alpha,\delta)
+ =\Theta\!\left(1+\min\{\alpha M,\log(1+2^n\alpha)\}\right).
+\end{equation}
+The upper bound holds for exact sampling; full-support backgrounds suffice for the lower bound.
+\end{proposition}
+\begin{proof}
+Let $\eta$ be uniform on the known candidate set and put $w=(\nu+\eta)/2$. Split the prefix tree using the known mass $w$ and threshold $\tau=\alpha/(4R^2(1-\alpha))$. A nonleaf terminal group has $\nu(u)\le2\tau$. Consequently an empty group has $h(u)\le\alpha/(2R)$, whereas an occupied group has $h(u)\ge\alpha/R$. All descendant tests have the same gap. Moreover the group contains at most $2\tau M\le\alpha M$ candidates, so recovery costs $O(1+\log(1+\alpha M))$ queries. Terminal leaves are tested exactly.
+
+Writing $z=2^n\alpha$, the same heavy-node count gives $G=O(\alpha^{-1}(1+\log z))$ when $z\ge1$. The same independent search and thinning rule has cap $O(1+\log z)$, including recovery because $\alpha M\le z$. When $z<1$, direct leaf search has constant cap. Combining with the $\lceil\alpha M\rceil$ leaf cap proves the upper bound.
+
+For the lower bound use the background and locations from Theorem~\ref{thm:background}, now with
+\[
+ d=\min\{n-1,\lfloor\log_2(1/(4\alpha))\rfloor\},\quad H=2^d,
+ \quad \ell=n-d,\quad K=H\ell.
+\]
+At every public ancestor, $\nu(u)\ge15/(16H)$ and $\alpha H\le1/4$. Thus $h/\mu\le4/3$ and $\mu/h\le1+4/15<4/3$ there; elsewhere the guide is exact. Equality-query counting gives $\Omega(1+\alpha\min\{M,K\})$ as before. If $d=n-1$, then $z\le1/2$ and $\alpha K=z/2\asymp\log(1+z)$. Otherwise $1/(8\alpha)<H\le1/(4\alpha)$, $z>1/2$, and $\ell$ differs from $\log_2z+2$ by less than one. Hence $\alpha K\asymp\log(1+z)$ in this case as well.
+\end{proof}

@@ -1,0 +1,335 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,microtype}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,array,tabularx}
+\allowdisplaybreaks[1]
+\usepackage[hidelinks]{hyperref}
+\hypersetup{pdftitle={Learning-guided sampling: finite classes and one-sided reliability},
+pdfauthor={Samuel Mausberg},
+pdfsubject={Prefix-oracle sampling, local information, and certificate acquisition},
+pdfkeywords={sampling, query complexity, prefix oracles, finite classes, certificates}}
+\usepackage{enumitem}
+\setlist{nosep,leftmargin=*}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\TV}{\operatorname{TV}}
+\newcommand{\E}{\mathbb E}
+\newcommand{\Prb}{\mathbb P}
+\newcommand{\bits}{\{0,1\}}
+\newcommand{\F}{\mathcal F}
+\newcommand{\CC}{\mathcal C}
+\newcommand{\DD}{\mathcal D}
+\newcommand{\Un}{U_n}
+\newcommand{\pos}[1]{(#1)_+}
+\newcommand{\Krate}{K(n,M)}
+\DeclareMathOperator{\KL}{D_{\mathrm{KL}}}
+\newcommand{\Fcal}{\mathcal F}
+\newcommand{\Ber}{\operatorname{Ber}}
+\newcommand{\Pp}{\mathbb P}
+\newcommand{\ind}{\mathbf 1}
+\newcommand{\eps}{\varepsilon}
+\DeclareMathOperator{\Var}{Var}
+\DeclareMathOperator{\Unif}{Unif}
+\title{Learning-guided sampling:\\finite classes and one-sided reliability}
+\author{Samuel Mausberg}
+\date{October 14, 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+We study sampling from an unknown member of a known finite class using approximate prefix masses. Under pointwise guidance, the worst-case query complexity is $\min\{M,n\sqrt{\log M},n^2\}$ up to logarithms. We show that one-sided safety and bounded stopped reciprocal capacity can nevertheless change the cost of a specified class from logarithmic to linear, with exact linear caps at fixed error and for exact sampling. For a known background plus an unknown atom of weight $\alpha$, we determine the worst-case rate over backgrounds as $\Theta(1+\min\{\alpha M,\alpha^{-1}\log(1+2^n\alpha^2)\})$ at error at most $\alpha/4$. A uniform background admits a sharper rate. The upper bounds derive membership tests and atom recovery from the guide; independent fallback sampling controls the complete output law. A composition theorem separates global certification from difficult fixed-error sampling. We also give a self-contained quadratic upper bound under weak guidance. The general fixed-error finite-class gap remains open. All results are checked in Lean~4, with the finite-class upper bound of Golowich, Moitra, and Rohatgi as an explicit hypothesis.
+\end{abstract}
+
+\section{The question and the access model}
+How much does knowing a finite class help when an approximate guide is the only source of information about its unknown target? Golowich, Moitra, and Rohatgi~\cite{gmr} introduced a finite-class framework for this question and obtained a sampling algorithm whose dependence on class size is through $\sqrt{\log M}$. We establish a matching worst-case lower characterization up to logarithms. For factor $R=9/4$, binary strings and error $1/16$, this answers their Problem 1.4 up to logarithmic factors. We then investigate what remains when pointwise accuracy is replaced by one-sided safety and a stopped moment bound.
+
+Sampling permits a useful distinction from identification. An unknown component of mass $\alpha$ may only need to be found on an $\alpha$ fraction of executions. This saves queries only when those executions can be selected through the available oracle and every other branch has the correct output law. Our atom constructions make both requirements explicit. They give a fixed-error separation between the two guidance models on the same class, and a sharp dependence on the known background's prefix geometry.
+
+\subsection{Access and accuracy}
+For a probability distribution $\mu$ on $\bits^n$, write $\mu(u)=\sum_{x\succeq u}\mu(x)$. The algorithm knows a class $\F$ of at most $M$ distributions and queries one fixed function $h:\bits^{\le n}\to\mathbb R_{\ge0}$. The target $\mu\in\F$ is unknown. We require
+\begin{equation}\label{eq:oracle}
+ h(\emptyset)=1,\qquad h(x)=\mu(x)\quad(|x|=n).
+\end{equation}
+The root is known without a query. Every call to $h$ is charged, including preprocessing and unsuccessful executions. A query bound is a deterministic cap on every execution. Accuracy means $\TV(\mathcal L(X),\mu)\le\delta$ for the unconditional output law. Computation on known data, including candidate evaluation and sampling, is free. Randomness is also free; no bit-complexity bound is asserted. All logarithms are natural unless a base is displayed, and $\widetilde O,\widetilde\Omega,\widetilde\Theta$ suppress logarithmic factors in the growing parameters.
+
+A pointwise factor-$R$ guide satisfies $\mu/R\le h\le R\mu$. The weaker model is
+\begin{equation}\label{eq:capacity-model}
+ h\le R\mu,\qquad
+ \CC(\mu,h):=\max_{A\ \mathrm{prefix\text{-}free}}
+                  \sum_{u\in A}\frac{\mu(u)^2}{h(u)}\le C.
+\end{equation}
+A positive numerator over zero has infinite cost; $0/0$ contributes zero. Thus finite capacity and safety force $h$ and $\mu$ to have the same support at every prefix. The maximum includes cuts of mixed depths. No additive measure realizing this bound is supplied.
+
+Write $Q_{\mathrm{pw}}(\F,\delta)$ and $Q_{\mathrm{safe}}(\F,\delta)$ for the minimax capped query complexities of a specified class, with factor $R=9/4$ in the first model and $R=C=9/4$ in the second. Write $Q_{\mathrm{pw}}(n,M,\delta)$ and $Q_{\mathrm{safe}}(n,M,\delta)$ for their worst cases over classes of size at most $M$ on $n$ bits. All constants called fixed are independent of the target and of $n,M,\alpha$.
+
+\subsection{The pointwise benchmark}
+\begin{theorem}[Pointwise characterization]\label{thm:pointwise}
+For $n,M\ge2$, let
+\begin{equation}\label{eq:K}
+ K(n,M)=\min\{M,n\sqrt{\log M},n^2\},\qquad L_n=\log(2n).
+\end{equation}
+There are absolute constants $c_0,c_1,c_2>0$ such that
+\begin{equation}\label{eq:pw-main}
+ \frac{c_0}{L_n}K(n,M)\le Q_{\mathrm{pw}}(n,M,1/16)
+ \le c_1\min\{M,n\sqrt{\log M}\log(2+\log M),n^2\}
+ \le c_2 L_n K(n,M).
+\end{equation}
+For all sufficiently large $n$,
+\begin{equation}\label{eq:pw-expn}
+ c_0\frac{n^{3/2}}{\sqrt{\log(2n)}}
+ \le Q_{\mathrm{pw}}(n,\lfloor e^n\rfloor,1/16)
+ \le c_1 n^{3/2}\log(2n).
+\end{equation}
+A singleton class requires no queries.
+\end{theorem}
+The lower bound uses a hidden table shared across output blocks. Its size controls the class cardinality, and finding table entries controls query cost, even for arbitrary long prefix queries. Appendix~\ref{app:pointwise} gives the full proof. The finite-class upper bound is due to Golowich, Moitra, and Rohatgi~\cite[Theorem 3.2]{gmr}; their Theorem 4.12 supplies $\Omega(n)$ when $M=\lfloor e^n\rfloor$, and Lemma~\ref{pw-lem:comb} restates its comb with root value one. Exact identification costs at most $M-1$ queries. Appendix~\ref{app:branching} proves the quadratic upper bound under the weaker assumptions~\eqref{eq:capacity-model} as well.
+
+Theorem~\ref{thm:fixed-class} separates the models on a single class at fixed error. Theorem~\ref{thm:local-rate} determines the atom-sampling rate under a uniform background, and Theorem~\ref{thm:background} the worst-case rate over known backgrounds. Sections~\ref{sec:construction} and~\ref{sec:composition} quantify a different obstruction: obtaining a certificate valid at every prefix can cost much more than producing a sample.
+
+\subsection{Formal verification}
+Every theorem, lemma, proposition and corollary of this paper is formalized in Lean~4 with Mathlib and checked by the Lean kernel. Algorithms are modeled as adaptive randomized query trees with exact output laws and a cap on every execution, and the lower bounds quantify over all of them. The finite-class upper bound of~\cite[Theorem 3.2]{gmr}, used in Theorem~\ref{thm:pointwise} and Corollary~\ref{cor:fixed-cert}, enters the formalization as an explicit hypothesis. The formal proof of Lemma~\ref{pw-lem:information} bounds the Hellinger affinity of the output laws of the stopped batch process, which gives the stated bound for every event that an algorithm can decide. The bounds written with $\widetilde O$ in~\eqref{eq:fixed-gap} are formalized as the explicit caps behind them. The code and a map from each result to its Lean statement are available at \url{https://github.com/SamMausberg/learning-guided-sampling}.
+
+\input{fixed-error.tex}
+\input{local-access.tex}
+\input{background.tex}
+
+\section{Precision and the cost of global certification}\label{sec:construction}
+The atom rate contains an inverse-accuracy regime. The following construction gives exact caps there with a positive, level-normalized guide and bounded local growth. It also quantifies the cost of constructing a global certificate.
+
+For $R>1$, define the stopped additive defect by
+\begin{equation}\label{eq:defect}
+ d_R(u)=\max\{0,h(u)-R\mu(u),\mu(u)-Rh(u)\},\qquad
+ \DD_R(\mu,h)=\max_{A\ \mathrm{prefix\text{-}free}}\sum_{u\in A}d_R(u).
+\end{equation}
+A coherent correction is a known nonnegative additive measure $\lambda$ with $\lambda(u)\ge d_R(u)$ at every prefix. Its representation must permit evaluation without hidden calls to $h$. Such a correction of mass $B$ yields a pointwise factor-$R$ guide
+\[
+ \bar h=\frac{h+\lambda/(R-1)}{1+B/(R-1)}
+ \quad\hbox{for}\quad
+ \bar\mu=\frac{\mu+\lambda/(R-1)}{1+B/(R-1)}.
+\]
+Indeed, adding $\lambda/(R-1)$ to each side of $h\le R\mu+\lambda$ and $\mu\le Rh+\lambda$ gives both multiplicative inequalities. The leaves remain exact and $\TV(\bar\mu,\mu)\le B/(R-1+B)$. This explains why finding a small, evaluable correction could be useful.
+
+\begin{theorem}[Precision and certificate access]\label{thm:main}
+For every integer $m\ge3$, put
+\[
+ M=4^m,\qquad n=3m+2,\qquad \alpha=2^{-m},\qquad \delta_m=\alpha/4.
+\]
+There is an explicitly represented class $\F_m$ of $M$ full-support targets for which
+\begin{align}
+ m\le Q_{\mathrm{pw}}(\F_m,\delta_m)&\le Q_{\mathrm{pw}}(\F_m,0)\le m+5,\label{eq:point-exact}\\
+ Q_{\mathrm{safe}}(\F_m,\delta_m)&=3\cdot2^{m-2},\qquad
+ Q_{\mathrm{safe}}(\F_m,0)=2^m.\label{eq:safe-exact}
+\end{align}
+The safe lower bound uses fixed guides that are positive, have mass one at every depth, and satisfy $h(ub)\le2h(u)$ and $h\le2\mu$.
+
+On this hard guide family the minimum coherent correction mass, at factor $9/4$, is
+\begin{equation}\label{eq:dstar}
+ d_m=\alpha-\frac{5/4+\alpha}{M}>0.
+\end{equation}
+For $B\ge d_m$, the largest uniformly guaranteed probability of returning a fully known valid correction of mass at most $B$, using at most $q$ guide queries, is exactly
+\begin{equation}\label{eq:cert-tradeoff}
+ \min\left\{1,\frac{q+\lfloor B/d_m\rfloor}{M}\right\}.
+\end{equation}
+In particular, producing an optimal-mass correction with certainty requires exactly $M-1$ queries. Success is evaluated against the hidden target; a randomized output need not announce whether it is valid. All statements allow arbitrary adaptive prefix queries and arbitrary computation.
+\end{theorem}
+
+
+At any fixed positive sampling tolerance, this class eventually requires zero queries: its uniform background lies within $\alpha$ of every target. The theorem concerns shrinking error. Section~\ref{sec:composition} transfers the certificate obstruction to a fixed-error sampling task.
+
+\subsection{A regular guide with bounded capacity}
+Set $k=2m$ and $a=1-\alpha$. Index targets by $\theta\in\bits^k$, and let $x_\theta=\theta0^{m+2}$. Define
+\begin{equation}\label{eq:target}
+ \mu_\theta=aU_n+\alpha\delta_{x_\theta}.
+\end{equation}
+For a prefix of length $t\le k$, let $h_\theta(u)=2^{-t}$. For $t=k+j$, $1\le j\le m+2$, put
+\begin{equation}\label{eq:guide}
+ \beta_j=\frac{2^{j-1}}{2M},\qquad
+ h_\theta(u)=(1-\beta_j)2^{-t}+\beta_j\mathbf1\{u\preceq x_\theta\}.
+\end{equation}
+The guide is fixed before the interaction. Its complete formula and the class may be known to the algorithm; only $\theta$ is hidden.
+
+\begin{lemma}[Regularity and the two exact budgets]\label{lem:capacity}
+The guide~\eqref{eq:guide} is positive, level-normalized, exact at leaves, and satisfies $h\le2\mu$ and $h(ub)\le2h(u)$. Moreover,
+\begin{equation}\label{eq:capacity-value}
+ \CC(\mu_\theta,h_\theta)=C_m:=2+\alpha-2\alpha^2-\alpha^3+\alpha^4
+ \le\frac{17}{8}<\frac94,
+ \qquad \DD_{9/4}(\mu_\theta,h_\theta)=d_m.
+\end{equation}
+The measure $d_m\delta_{x_\theta}$ is an optimal coherent correction.
+\end{lemma}
+\begin{proof}
+The level sums equal one by construction. Since $0\le\beta_j\le\alpha\le1/2$, positivity holds and $h\le\mu/a\le2\mu$. At the final depth $\beta_{m+2}=\alpha$, proving exactness.
+
+Before depth $k$, child values are half their parents. At the first padding step the distinguished child has value $1/M-1/(4M^2)$, at most its parent's $1/M$. At subsequent steps $\beta$ doubles. If the parent is distinguished and $v=2^{-t}$, its distinguished child's value is
+\[
+ (1-2\beta)v/2+2\beta\le2\bigl((1-\beta)v+\beta\bigr).
+\]
+Every other child comparison is bounded by one half or has a larger parent denominator. This proves local growth.
+
+For the reciprocal capacity, complete any prefix-free set with uncovered leaves. Off the distinguished path, $\mu\le h$, so its node contribution $\mu^2/h$ is at most its total leaf contribution $\mu$. Replacing every such node by leaves can only increase the sum. Thus the maximum is exactly
+\begin{equation}\label{eq:cut-reduction}
+ \max_{0\le t\le n}F_t,\qquad
+ F_t=1-\mu(u_t)+\frac{\mu(u_t)^2}{h(u_t)},\quad u_t=x_{\theta,1:t}.
+\end{equation}
+For $t\le k$, writing $p=2^{-t}$ gives
+\[
+ F_t=a+2a\alpha-a\alpha p+\frac{\alpha^2}{p}.
+\]
+Both variable terms increase as $p$ decreases, so the maximum through depth $k$ is $F_k=C_m$. At the first padding step, direct subtraction gives
+\[
+ F_k-F_{k+1}=
+ \frac{\alpha(\alpha+1)(2\alpha^3-\alpha^2-6\alpha+4)}{2(\alpha+2)}\ge0.
+\]
+For $0\le\alpha\le1/2$, the last polynomial is at least $4-1/4-3=3/4$. At later padding steps, $h(u_t)\ge1/M$ and $\alpha\le\mu(u_t)\le\mu(u_k)$. Since $Mv^2-v$ increases for $v\ge1/M$, these steps also have $F_t\le F_k$. Finally, $-\alpha^3+\alpha^4\le0$ and $\alpha-2\alpha^2\le1/8$, proving the bound on $C_m$.
+
+The overestimation defect is zero. All other nonzero demands lie on the distinguished path, so the maximum cut demand is its largest node demand. Up to depth $k$, the underestimation expression is $\alpha-(9/4-a)2^{-t}$, maximized at $k$ with value $d_m$. For $j\ge2$, the guide is no smaller and the target mass is no larger than at depth $k$. At $j=1$, the difference between the depth-$k$ and depth-$(k+1)$ expressions is
+\[
+ \frac{a}{2M}-\frac{9/4}{4M^2}>0.
+\]
+This proves the defect identity. Every demand is dominated by $d_m\delta_{x_\theta}$, and the depth-$k$ demand forces any dominating additive measure to have mass at least $d_m$.
+\end{proof}
+
+\subsection{Equality access and the exact sampling caps}
+Every query to $h_\theta$ is simulated by at most one equality test of a proposed complete key. Queries of length at most $k$ are public. A longer prefix specifies a key; if its padding is not all zero its answer is public, and otherwise the answer is the public baseline in~\eqref{eq:guide} plus $\beta_j$ exactly when that key is $\theta$. Arbitrary long queries and exact leaf queries are included.
+
+\begin{lemma}[Equality-query counting]\label{lem:equality}
+An adaptive randomized algorithm making at most $q$ equality queries predicts a uniformly random key among $M$ possibilities with probability at most $(q+1)/M$.
+\end{lemma}
+\begin{proof}
+Fix the internal randomness and follow the all-negative transcript. It tests at most $q$ distinct keys. Every other key produces that same transcript, whose final guess can be correct for at most one of them. Positive transcripts contribute at most the tested keys. Average over the internal randomness. This proof allows arbitrary computation and complete knowledge of all public formulas.
+\end{proof}
+
+A draw from~\eqref{eq:target} has its first $k$ bits equal to $\theta$ with probability $\alpha+a/M$. A $\delta$-accurate sampler therefore predicts the key with probability at least $\alpha+a/M-\delta$. Lemma~\ref{lem:equality} implies
+\begin{equation}\label{eq:search-lower}
+ q\ge \alpha(M-1)-\delta M.
+\end{equation}
+For $\delta=\alpha/4$ its right side is $3\cdot2^{m-2}-\alpha$; for $\delta=0$ it is $2^m-\alpha$. Taking integer ceilings proves the two lower bounds in~\eqref{eq:safe-exact}.
+
+For matching upper bounds, choose $q$ distinct keys uniformly and query their complete strings $x_\theta$. Exact leaves reveal whether a key was found. On a hit output that string; otherwise output a fresh draw from $U_n$. For any guide satisfying~\eqref{eq:oracle}, its output law is
+\begin{equation}\label{eq:search-law}
+ (1-q/M)U_n+(q/M)\delta_{x_\theta}.
+\end{equation}
+At $q=3\cdot2^{m-2}$, its TV distance is $(\alpha/4)(1-2^{-n})\le\delta_m$. At $q=2^m$ the law is exact. This proves the safe sampling portion of Theorem~\ref{thm:main} uniformly over all legal guides, not only the hard family.
+
+\subsection{The exact pointwise comparison}\label{sec:pointwise}
+The following sampler applies to every pointwise factor-$9/4$ guide for~\eqref{eq:target}. Put $d=m+3$ and partition $\bits^n$ by its first $d$ bits into $G=2^d=8/\alpha$ equal groups. A group prefix $u$ not containing $x_\theta$ has
+\[
+ h(u)\le\frac94\frac aG<\frac\alpha3,
+\]
+whereas a group containing $x_\theta$ has $h(u)\ge4\alpha/9>\alpha/3$. The same test works at every deeper key prefix.
+
+Choose eight distinct groups uniformly, independently of any proposed output, and query their prefixes. If none passes the threshold, output a fresh $U_n$ draw. On a hit, recover the remaining $k-d=m-3$ key bits: at each step query the zero child, choosing zero if its value exceeds $\alpha/3$ and one otherwise. Output the recovered string $x_\theta$ with its known padding. The query cap is $8+(m-3)=m+5$.
+
+The hit probability is $8/G=\alpha$. The unconditional output law is therefore exactly
+\[
+ (1-\alpha)U_n+\alpha\delta_{x_\theta}.
+\]
+
+
+For the lower bound, choose the legal pointwise guide $h=\mu_\theta$. Each prefix has at most two possible answers over the keys. A deterministic $q$-query decision tree has at most $2^q$ transcripts, and its final key guess can be correct for at most $2^q$ keys. Randomization preserves the bound. Consequently
+\begin{equation}\label{eq:binary-lower}
+ 2^q\ge M(\alpha-\delta)+a.
+\end{equation}
+At $\delta=\alpha/4$, this is strictly larger than $2^{m-1}$, so $q\ge m$. The exact case even gives $q\ge m+1$. This completes~\eqref{eq:point-exact}.
+
+\subsection{The certificate tradeoff}\label{sec:certification}
+For the hard family, a valid coherent correction must put mass at least $d_m$ on the disjoint depth-$k$ prefix naming the true key. A single additive measure of mass $B$ can therefore certify at most $\lfloor B/d_m\rfloor$ keys on a transcript that does not identify one.
+
+\begin{proof}[Proof of the certification assertion in Theorem~\ref{thm:main}]
+Fix the procedure's randomness and follow its all-negative equality transcript. At most $q$ keys are tested. For every remaining key it returns the same fully specified measure, valid for at most $\lfloor B/d_m\rfloor$ of them. Including positive transcripts, average success is at most $(q+\lfloor B/d_m\rfloor)/M$. A uniform guarantee cannot exceed this average. Averaging over randomness proves the upper bound on success.
+
+For attainment, if $q\ge M-1$, identify the key and return its optimal correction. Otherwise query a uniformly random set of $q$ distinct keys. On a hit return $d_m\delta_{x_\theta}$. Otherwise choose uniformly up to $\lfloor B/d_m\rfloor$ untested keys and put mass $d_m$ on each of their distinguished strings. For every selected key, this measure dominates its path demands by Lemma~\ref{lem:capacity}. Its success probability is the right side of~\eqref{eq:cert-tradeoff}, uniformly in the hidden key. If fewer than $q$ queries already determine the key, the procedure may finish early.
+\end{proof}
+
+For $B<d_m$, no valid certificate exists. For $B\ge d_m$ and $0\le\zeta\le1$, success at least $1-\zeta$ is possible exactly when
+\[
+ q+\lfloor B/d_m\rfloor\ge\lceil(1-\zeta)M\rceil.
+\]
+Since $d_m\ge\alpha/2$ for $m\ge3$, a fixed budget $B\ge0$ gives the necessary bound
+\begin{equation}\label{eq:fixed-B}
+ q\ge(1-\zeta)M-2B\sqrt M.
+\end{equation}
+Thus a fixed correction budget can still require almost all $M$ equality tests. At fixed sampling accuracy, the atom can instead be ignored once $\alpha$ is sufficiently small.
+
+
+\input{composition.tex}
+
+\section{The remaining fixed-error question}\label{sec:remaining}
+For $R=C=9/4$ and fixed $0<\delta\le1/16$, the general bounds are
+\begin{equation}\label{eq:fixed-gap}
+ \widetilde\Omega\bigl(K(n,M)\bigr)
+ \le Q_{\mathrm{safe}}(n,M,\delta)
+ \le\widetilde O\bigl(\min\{M,n\log M,n^2\}\bigr).
+\end{equation}
+The lower bound follows from the pointwise submodel. Exact identification, the frontier learner in Appendix~\ref{app:frontier}, and Theorem~\ref{thm:branching} give the upper bounds with deterministic caps. The unresolved question is whether $\widetilde O(K(n,M))$ holds in the safe model, or whether some classes require asymptotically more. Theorem~\ref{thm:fixed-class} rules out transferring the \emph{class-specific} pointwise cost unchanged. Since its parameters have $M=\Theta(n)$, it leaves the worst-case benchmark intact.
+
+The atom theorem narrows the search for harder examples. For fixed $\alpha$, every known-background single-atom class has an $O_\alpha(n)$ sampler. Its proof works because a known mass partition and the singleton consequence of capacity supply exact local tests. An arbitrary finite class has no such decomposition. The composition theorem preserves a hard sampling task while adding a costly global certificate, but its certificate-hard component is negligible at fixed error.
+
+A possible route to the upper bound is to replace the pointwise learner's two-sided candidate tests by tests that preserve the target using only safety. For a first-occurrence frontier on which $\mu(u)/h(u)>L$, capacity bounds its target mass by $C/L$. That observation alone does not justify trimming the guide: the learner may query a low-mass prefix and eliminate the target, changing all later output branches. A successful argument must account for those adaptive histories and construct the required output distribution through counted queries. The frontier learner does so at a cost proportional to $n\log M$, up to logarithms; the square-root dependence remains the missing step.
+
+\subsection{Relation to other sampling models}
+Block and Polyanskiy~\cite[Theorems 3 and 5]{bp} determine approximate-rejection-sampling rates under divergence bounds when the output is selected from independent reference samples. Uniform Race~\cite[Corollary 1 and Appendix D]{ur} achieves inverse-budget error under a second-moment bound without an input acceptance threshold. These results already establish inverse-accuracy phenomena in that access model. Here arbitrary adaptive prefix queries and outputs are allowed. Our atom bounds charge for obtaining the local information that a mixture sampler needs; the mixture identity itself is elementary.
+
+Poisson branching and independent-offspring particle methods predate this work~\cite{poisson,rrr}. Appendix~\ref{app:branching} specializes them to absolute prefix masses and proves the unconditional error and hard cap directly. Neither sampling from a known distribution nor ordinary resampling is an additional oracle in the atom algorithms.
+
+\section*{AI disclosure}
+GPT-6 and Claude were used to assist with mathematical proofs, writing, and formalization.
+
+\appendix
+\section{A safe frontier learner}\label{app:frontier}
+Assume $0<\delta<1$, $M\ge2$, and~\eqref{eq:oracle} and~\eqref{eq:capacity-model}. Define
+\[
+ J_0=1+\lceil\log_2M\rceil,\quad p_0=\frac{\delta^2}{32RC},\quad
+ T=\left\lceil p_0^{-1}\log\frac{4J_0}{\delta}\right\rceil,\quad
+ J=\left\lceil4R\log\frac4\delta\right\rceil.
+\]
+The query cap is $2n(J_0T+J)$, with TV error at most $\delta$.
+
+Maintain a version space $G$ containing $\mu$, and its uniform mixture $\eta$. A scan draws $X\sim\eta$ for free and follows its path, querying both children at each internal prefix. Stop at the first parent having a child $v$ with $h(v)>2R\eta(v)$. Retain only candidates with $\phi(v)\ge h(v)/R$. The target survives by safety, and fewer than half the candidates remain, because every retained candidate has mass strictly greater than twice the mixture mass. A singleton is sampled directly.
+
+For a fixed stage let $A$ be its possible first-violation parents. This is a prefix-free set, with $h(u)\le2R\eta(u)$ at every $u\in A$. Writing $p=\eta(A)$ and $b=\mu(A)$, weighted Cauchy--Schwarz gives
+\[
+ b^2\le\left(\sum_{u\in A}\frac{\mu(u)^2}{h(u)}\right)
+           \left(\sum_{u\in A}h(u)\right)\le2RCp.
+\]
+Zero terms are omitted. All leaves outside these subtrees satisfy $\mu(x)=h(x)\le2R\eta(x)$.
+
+Run at most $T$ independent scans per stage. A violation updates the class. If all pass, freeze it. Conditional on the entire history before a stage, its mixture and frontier are fixed. If $p>p_0$, a false pass has probability at most $e^{-Tp_0}\le\delta/(4J_0)$. Union bound over the capped number of stages gives probability at most $\delta/4$ of freezing at such a stage. Otherwise $b\le\delta/4$.
+
+Use $J$ fresh scans for production. Reject stopped scans, and accept a good leaf with probability $\mu(x)/(2R\eta(x))$, available from its leaf query. Its accepted law is $\mu$ conditioned on good leaves; a trial accepts with probability $(1-b)/(2R)\ge1/(4R)$. Exhaustion has probability at most $e^{-J/(4R)}\le\delta/4$. A fixed fallback and the three error contributions give TV at most $3\delta/4$. Each scan costs at most $2n$ calls. The conditioning at each stage includes the complete preceding history.
+
+\input{pointwise-proof.tex}
+\input{branching.tex}
+\begin{thebibliography}{99}
+\bibitem{gmr} Noah Golowich, Ankur Moitra, and Dhruv Rohatgi.
+\emph{The Power of Test-Time Training for Approximate Sampling}.
+arXiv:2606.11437v1, 2026.
+\url{https://arxiv.org/abs/2606.11437v1}.
+
+\bibitem{bp} Adam Block and Yury Polyanskiy.
+The Sample Complexity of Approximate Rejection Sampling With Applications to Smoothed Online Learning.
+In \emph{Proceedings of the 36th Conference on Learning Theory},
+\emph{Proceedings of Machine Learning Research} \textbf{195}:228--273, 2023.
+\url{https://proceedings.mlr.press/v195/block23a.html}.
+
+\bibitem{ur} Seiyun Shin, Juhyeong Pang, and Kwang-Sung Jun.
+\emph{Uniform Race: Parameter-Free Approximate Rejection Sampling}.
+arXiv:2609.34639v1, 2026.
+\url{https://arxiv.org/abs/2609.34639v1}.
+
+\bibitem{poisson} Tomasz C\k{a}ka\l{}a, B\l{}a\.{z}ej Miasojedow, and Wojciech Niemiro.
+\emph{Particle MCMC with Poisson Resampling: Parallelization and Continuous Time Models}.
+\emph{Journal of Computational and Graphical Statistics} \textbf{30}(3):671--684, 2021. Cited by its arXiv numbering, arXiv:1707.01660v2.
+\url{https://arxiv.org/abs/1707.01660v2}.
+
+\bibitem{rrr} Noah Golowich, Fan Chen, Dhruv Rohatgi, Raghav Singhal, Carles Domingo-Enrich, Dylan J. Foster, and Akshay Krishnamurthy.
+\emph{Reject, Resample, Repeat: Understanding Parallel Reasoning in Language Model Inference}.
+arXiv:2603.07887v1, 2026.
+\url{https://arxiv.org/abs/2603.07887v1}.
+\end{thebibliography}
+\end{document}

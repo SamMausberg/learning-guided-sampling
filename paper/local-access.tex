@@ -1,0 +1,157 @@
+\section{Local access from the guide itself}\label{sec:local}
+For a uniform background, a sufficiently fine prefix partition makes atom membership observable. The same comparison recovers the atom after a hit.
+
+For $1\le k\le n$, $M=2^k$, and $0<\alpha\le1/4$, consider
+\begin{equation}\label{eq:spike-class}
+ \F_{n,k,\alpha}=\{(1-\alpha)U_n+\alpha\delta_{\theta0^{n-k}}:
+                    \theta\in\bits^k\}.
+\end{equation}
+The mixture weight, candidate strings, and background are known. Only $\theta$ and the fixed legal guide are unknown.
+
+\begin{theorem}[The query cost of an unknown atom]\label{thm:local-rate}
+Let $0\le\delta\le\alpha/4$ and $R=C=9/4$. Uniformly over $n\ge k\ge1$ and $0<\alpha\le1/4$,
+\begin{equation}\label{eq:local-rate}
+ Q_{\mathrm{safe}}(\F_{n,k,\alpha},\delta)
+ =\Theta\!\left(1+\min\{\alpha M,\alpha^{-1}+\log_2 M\}\right).
+\end{equation}
+The upper bound holds for exact sampling. It requires no membership oracle, conditional sampler, or supplied certificate. The lower bound allows arbitrary adaptive prefix queries and arbitrary outputs. The implicit constants are absolute.
+\end{theorem}
+
+For fixed $\alpha>0$, the rate is $\Theta(1+\log M)$ as $M$ grows. For $M\asymp\alpha^{-2}$, it is $\Theta(\alpha^{-1})$. The bounds include every query used to find and recover the atom.
+
+\subsection{A one-query membership test}
+\begin{lemma}[A mass gap makes membership observable]\label{lem:local-test}
+Suppose a known prefix group $u$ either contains an entire hidden component of mass $\alpha>0$, or contains none of it. In the latter case its target mass is a known number $b$. Assume
+\[
+ h(u)\le R\mu(u),\qquad \mu(u)^2\le C h(u),\qquad C>0,
+ \qquad Rb<\alpha^2/C.
+\]
+Then the group contains the component exactly when $h(u)\ge\alpha^2/C$.
+\end{lemma}
+\begin{proof}
+In the positive case, $\mu(u)\ge\alpha$, so $h(u)\ge\alpha^2/C$. In the negative case, $h(u)\le Rb<\alpha^2/C$. The reciprocal inequality follows from the singleton cut $\{u\}$ in~\eqref{eq:capacity-model}.
+\end{proof}
+
+Write $a=1-\alpha$, and let $d$ be the smallest nonnegative integer with
+\begin{equation}\label{eq:resolution}
+ G=2^d\ge \frac{2RCa}{\alpha^2}.
+\end{equation}
+If $d\le k$, partition strings by their first $d$ bits. Every such group has background mass $a/G$. Every descendant prefix has no larger background mass. Thus the test in Lemma~\ref{lem:local-test} is valid at the group and at every deeper key prefix. A hit permits recovery of each remaining key bit with one query to its zero child. The known padding needs no queries.
+
+The test uses a gap between two numerical intervals. It performs no statistical estimation and has no local error to accumulate. The full stopped-capacity assumption is needed for the lower-bound model; the upper algorithm uses only its singleton consequences.
+
+\subsection{Search only as often as the output law requires}
+Let $\beta=\alpha$ for an exact sample, or $\beta=\alpha-\delta$ for error at most $\delta$. Set $q=\lceil\beta G\rceil$. Choose a random set of $q$ groups, independently of the eventual background draw, so that each group is included with probability $q/G$. A uniformly shifted block of $q$ consecutive group indices suffices.
+
+Query these groups until a hit or exhaustion. On a hit, flip a coin with success probability $\beta G/q$. Only on coin success recover the remaining key bits and output the atom. Every other branch outputs a fresh sample from $U_n$. The probability of the atom-output branch is exactly
+\begin{equation}\label{eq:branch-balance}
+ \frac qG\,\frac{\beta G}{q}=\beta.
+\end{equation}
+Consequently the complete output law is
+\begin{equation}\label{eq:local-output}
+ (1-\beta)U_n+\beta\delta_{\theta0^{n-k}},
+\end{equation}
+whose distance to the target is $(\alpha-\beta)(1-2^{-n})\le\delta$. The deterministic cap is $q+k-d$; the expected number of recovery queries is $\beta(k-d)$. All unsuccessful tests count toward $q$.
+
+There is also an exact-leaf alternative. Search $\lceil\beta M\rceil$ candidate atoms with the same inclusion and coin rule. A leaf query detects the extra mass exactly. Thus, when $d\le k$,
+\begin{equation}\label{eq:local-cap}
+ Q_{\mathrm{safe}}(\F_{n,k,\alpha},\delta)
+ \le\min\{\lceil\beta M\rceil,\lceil\beta 2^d\rceil+k-d\}.
+\end{equation}
+When $d>k$, use the first term alone. Since $2^d<4RCa/\alpha^2$, the exact upper bound in Theorem~\ref{thm:local-rate} follows.
+
+
+
+\subsection{Matching lower bounds}
+First take the legal guide $h=\mu_\theta$. At every prefix it has at most two possible answers as $\theta$ varies. A fixed-seed decision tree of depth $q$ therefore has at most $2^q$ transcripts. Its output predicts a uniform key with probability at most $2^q/M$. Accuracy requires prediction probability at least $\alpha+a/M-\delta$, hence
+\begin{equation}\label{eq:local-information}
+ q\ge\log_2\bigl((\alpha-\delta)M+a\bigr).
+\end{equation}
+Zero queries are impossible for $\delta\le\alpha/4$: two targets have distance $\alpha>2\delta$.
+
+For the search obstruction, assume $k\ge2$ and put
+\[
+ s=\min\{k-1,\lfloor\log_2(\alpha^{-2})\rfloor\},\qquad H=2^s.
+\]
+Restrict to the $H$ targets whose atoms are $\vartheta0^{n-s}$, $\vartheta\in\bits^s$. Set the guide to $2^{-|u|}$ through depth $s$ and to the exact target below that depth. This is fixed, positive, exact at leaves, and safe since $h\le\mu/a\le(4/3)\mu$.
+
+Its stopped capacity is
+\begin{equation}\label{eq:local-hard-capacity}
+ 1+\alpha-2\alpha^2-\frac{a\alpha}{H}+\alpha^2H\le\frac{17}{8}.
+\end{equation}
+To see this, replace every node off the distinguished path by its descendant leaves. Such a replacement does not decrease the cut sum because $\mu\le h$ there. A cut meeting the distinguished path at depth $t\le s$ has value
+\[
+ a+2a\alpha-a\alpha 2^{-t}+\alpha^2 2^t,
+\]
+which increases with $t$. Below depth $s$ the guide is exact. Evaluating at $s$, using $\alpha^2H\le1$ and $\alpha-2\alpha^2\le1/8$, proves~\eqref{eq:local-hard-capacity}.
+
+Each query through depth $s$ is public. Every longer query specifies one complete coarse key; its answer is public unless this key equals $\vartheta$. It is therefore simulated by one equality test. Following the all-negative transcript shows that $q$ adaptive equality queries predict a uniform key with probability at most $(q+1)/H$. Accuracy forces
+\begin{equation}\label{eq:local-search}
+ q\ge (\alpha-\delta)H-\alpha
+ \ge\frac38\min\{\alpha M,\alpha^{-1}\}-\frac14.
+\end{equation}
+This includes arbitrary long queries and leaf queries.
+
+To combine the bounds, set $A=\alpha M$, $B=\alpha^{-1}\ge4$, and $L=\log_2 B\le B/2$. Equations~\eqref{eq:local-information} and~\eqref{eq:local-search}, together with $q\ge1$, imply
+\[
+ \min\{A,B\}\le4q,\qquad k\le q+L+1.
+\]
+If $A\le B$, the desired minimum is at most $4q$. If $A>B$, then $B\le4q$ and $k\le4q$, so $\min\{A,B+k\}\le8q$. Thus the right side of~\eqref{eq:local-rate} is at most $9q$. The case $k=1$ follows from $q\ge1$. This completes the proof.
+
+\subsection{Arbitrary known locations under a uniform background}
+The upper mechanism does not require a complete cube of possible keys.
+\begin{proposition}\label{prop:arbitrary-locations}
+Let $S\subseteq\bits^n$ be any known set of $M\ge2$ distinct strings, and let $\mu_x=(1-\alpha)U_n+\alpha\delta_x$ for unknown $x\in S$. Under~\eqref{eq:capacity-model}, exact sampling uses
+\begin{equation}\label{eq:arbitrary-upper}
+ O\!\left(1+\min\{\alpha M,RC/\alpha+\log M\}\right)
+\end{equation}
+guide queries. The constant is absolute for $R,C\ge1$ and $0<\alpha\le1/4$.
+\end{proposition}
+\begin{proof}
+Use the depth $d$ in~\eqref{eq:resolution} when $d\le n$. Search only its $G'\le2^d$ groups containing candidates, each with inclusion probability $q/G'$ for $q=\lceil\alpha G'\rceil$. On a hit, proceed with probability $\alpha G'/q$. Lemma~\ref{lem:local-test} still tests membership. On the selected atom-output branch, recover $x$ using balanced prefix tests inside its group.
+
+For any remaining set of $N\ge2$ candidate strings in that group, some descendant prefix contains between $N/3$ and $2N/3$ candidates. Follow a largest child from the group root until its count first falls to at most $2N/3$; that child has more than $N/3$ candidates. Query it and retain the indicated side. Every such prefix has background mass at most $a/2^d$, so the test remains exact. After at most $\lceil\log_{3/2}M\rceil$ queries only one candidate remains. The atom branch has probability $\alpha$ regardless of the hidden location. Compare this cap with the $\lceil\alpha M\rceil$ exact-leaf alternative. If $d>n$, the latter already has cap at most $2RCa/\alpha+1$.
+\end{proof}
+
+Section~\ref{sec:background} constructs the corresponding light-prefix partition for arbitrary known backgrounds and determines its worst-case cost.
+
+\begin{corollary}[Pointwise comparison on the same class]\label{cor:spike-pointwise}
+For the class~\eqref{eq:spike-class}, factor $R=9/4$, and $0\le\delta\le\alpha/4$,
+\[
+ Q_{\mathrm{pw}}(\F_{n,k,\alpha},\delta)
+ =\Theta\!\left(1+\log_2(1+\alpha M)\right).
+\]
+The upper bound again holds for exact sampling.
+\end{corollary}
+\begin{proof}
+Use the smallest power $G=2^d\ge2R^2a/\alpha$. At depth $d$ and below, an occupied prefix has $h\ge\alpha/R$ and an empty one has $h\le Ra/G\le\alpha/(2R)$. Search $\lceil\alpha G\rceil=O(1)$ groups and recover the remaining $k-d$ key bits on the atom branch. If $d>k$, the exact-leaf search costs $O(1)$. Otherwise $k-d\le\log_2(\alpha M)$. Equation~\eqref{eq:local-information} and the zero-query obstruction prove the lower bound.
+\end{proof}
+
+\subsection{The background can prevent coarse search}
+The dependence on the background is necessary, even when it is known and has full support.
+\begin{proposition}\label{prop:comb}
+For every $M\ge2$ and $0<\alpha\le1/4$, there is a known full-support background $\nu$ on $M$ bits and a known set $S$ of $M$ atom locations such that, for $\mathcal H=\{(1-\alpha)\nu+\alpha\delta_x:x\in S\}$ and $0\le\delta\le\alpha/4$,
+\[
+ Q_{\mathrm{pw}}(\mathcal H,\delta)
+ =\Theta(1+\alpha M),\qquad
+ Q_{\mathrm{safe}}(\mathcal H,\delta)
+ =\Theta(1+\alpha M).
+\]
+The implicit constants are absolute. The lower-bound guides are already pointwise factor $4/3$.
+\end{proposition}
+\begin{proof}
+Set $n=M$, $\nu=\tfrac34\delta_{0^n}+\tfrac14U_n$, and
+$x_j=0^{j-1}10^{n-j}$ for $1\le j\le M$. At a proper all-zero prefix use the public answer $h_j(u)=\nu(u)$. At every other prefix, including leaves, use the exact target mass. Write $a=1-\alpha$. On a proper all-zero prefix, $\nu(u)\ge3/4$ and
+\[
+ a\nu(u)\le\mu_j(u)\le a\nu(u)+\alpha,
+ \qquad \frac{h_j(u)}{\mu_j(u)}\le\frac1a\le\frac43,
+ \qquad \frac{\mu_j(u)}{h_j(u)}\le a+\frac{4\alpha}{3}\le\frac{13}{12}.
+\]
+Thus the guide is pointwise factor $4/3$, and its stopped capacity is at most $4/3$.
+
+An all-zero query has a public answer. Every other query specifies its first-one position, and is simulated by at most one equality test of $j$. The output event $\{x_j\}$ has target probability $\alpha+a/(4\cdot2^n)$. Equality-query counting therefore gives
+\[
+ q\ge M\left(\alpha-\delta+\frac{a}{4\cdot2^n}\right)-1.
+\]
+Together with the zero-query obstruction, this is $\Omega(1+\alpha M)$. Searching $\lceil\alpha M\rceil$ exact candidate leaves, outputting the atom on a hit and a fresh $\nu$ draw otherwise, with the same thinning coin as above, gives an exact sample for every legal guide.
+\end{proof}

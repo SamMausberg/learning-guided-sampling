@@ -1,0 +1,54 @@
+\section{A self-contained quadratic upper bound}\label{app:branching}
+Poisson tree particle filters have unbiased unnormalized estimators~\cite[Section 3 and Proposition 4.1]{poisson}. Golowich, Chen, Rohatgi, et al.~\cite[Appendix E]{rrr} analyze an independent-offspring formulation in their inference model. We give the complete argument for the present prefix oracle. It uses absolute guide masses and includes extinction, normalization, and a deterministic query cap.
+
+\begin{theorem}[Branching with an explicit cap]\label{thm:branching}
+Let $n\ge1$. Suppose $h(\emptyset)=1$, $h$ has the same support as $\mu$ at every prefix, and its leaves are exact. Let public finite bounds $A,B$ satisfy
+\begin{equation}\label{eq:branch-moments}
+ \sum_{t=0}^{n-1}\sum_{|u|=t}h(u)\le A,
+ \qquad
+ \sum_{t=1}^n\sum_{|u|=t}\frac{\mu(u)^2}{h(u)}\le B.
+\end{equation}
+For $0<\delta<1$, a sampler with unconditional error at most $\delta$ has deterministic cap
+\begin{equation}\label{eq:branch-cap}
+ P=\lceil B/\delta^2\rceil,
+ \qquad q=\lceil4PA/\delta\rceil.
+\end{equation}
+In particular, one-sided safety $h\le R\mu$ and stopped capacity at most $C$ give $A=Rn$, $B=Cn$, and $O(RC n^2/\delta^3+Rn/\delta)$ queries.
+\end{theorem}
+\begin{proof}
+Start one particle at the root. A particle at a nonleaf $u$ has, independently for each $b\in\bits$, a Poisson number of children at $ub$ with mean $h(ub)/h(u)$. Query both children when processing the particle; retain the parent's value from its creation. The root value is known. Zero-valued children receive no particles. Finite depth and finite means make every generated tree finite almost surely. We count repeated calls separately.
+
+Let $N(u)$ be the number of particles at $u$. Induction gives $\E N(u)=h(u)$. If $Y$ is the counting measure of terminal particles and $L=Y(\bits^n)$, exact leaves imply
+\begin{equation}\label{eq:branch-unbiased}
+ \E Y(x)=\mu(x),\qquad \E L=1.
+\end{equation}
+The expected query count of a tree is $2\sum_{t<n}\sum_{|u|=t}h(u)\le2A$.
+
+Define $z(u)=\mu(u)/h(u)$ on the positive support, and zero otherwise. With respect to the generated populations,
+\[
+ Z_t=\sum_{|u|=t}N(u)z(u)
+\]
+is a martingale: a parent particle at $u$ has expected child contribution $\sum_b\mu(ub)/h(u)=z(u)$. Independent Poisson offspring and $\E N(u)=h(u)$ give
+\[
+ \E\bigl[(Z_t-Z_{t-1})^2\bigr]
+ =\sum_{|v|=t}\frac{\mu(v)^2}{h(v)}.
+\]
+Since $Z_0=1$ and $Z_n=L$, orthogonality of the martingale increments proves $\Var L\le B$.
+
+Generate $P$ independent trees and pool their leaves. Let $T$ be the total leaf count. Conditional on the pool, let $\rho$ be its uniform empirical probability measure if $T>0$, and a fixed point mass if $T=0$. Draw the output from $\rho$. By~\eqref{eq:branch-unbiased}, including extinction,
+\[
+ \E\left[\frac{T}{P}\rho\right]=\mu.
+\]
+Consequently the untruncated output law satisfies
+\[
+ \TV(\E\rho,\mu)
+ \le\frac12\E\left|1-\frac TP\right|
+ \le\frac12\sqrt{\Var(T/P)}
+ \le\frac12\sqrt{B/P}\le\frac\delta2.
+\]
+The extinction branch is included in this bound.
+
+The expected total number of queries is at most $2PA$. Abort before making query $q+1$ and return the fixed fallback. Markov's inequality bounds this event by $2PA/q\le\delta/2$. Coupling capped and uncapped executions adds at most $\delta/2$ to their output distance. Thus the cap in~\eqref{eq:branch-cap} includes every call in successful, extinct, and aborted trees.
+
+Finally, safety bounds each level sum of $h$ by $R$, and each level is an antichain, so capacity bounds each reciprocal sum by $C$. This proves the stated choices of $A$ and $B$.
+\end{proof}

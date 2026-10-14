@@ -1,0 +1,75 @@
+\section{Certificates after a difficult sampling task}\label{sec:composition}
+The small spike can be placed after any pointwise-guided sampling problem. This preserves the reliability constants and transfers that problem's fixed-error sampling cost. The certificate obstruction therefore persists alongside that sampling cost. For outer and inner distributions $\nu,\sigma$ with guides $g,h$, define
+\begin{equation}\label{eq:composition-guide}
+ \mu=\nu\otimes\sigma,\qquad
+ H(u)=g(u)\ (|u|\le d),\qquad H(xv)=\nu(x)h(v)\ (|x|=d).
+\end{equation}
+Exact outer leaves and $h(\emptyset)=1$ make the definitions agree at $|u|=d$.
+
+\begin{lemma}[Capacity under concatenation]\label{lem:capacity-concatenation}
+Let $g,h$ have root value one, exact leaves, and the same prefix supports as distributions $\nu$ on $d\ge1$ bits and $\sigma$ on $n\ge1$ bits. Write $C_{\mathrm{out}}=\CC(\nu,g)<\infty$ and $C_{\mathrm{in}}=\CC(\sigma,h)<\infty$. For the product guide defined in~\eqref{eq:composition-guide},
+\begin{equation}\label{eq:capacity-concatenation}
+ \CC(\nu\otimes\sigma,H)
+ =C_{\mathrm{in}}+
+ \max_{A\subseteq\bits^{<d}\ \mathrm{prefix\text{-}free}}
+ \sum_{u\in A}\left(\frac{\nu(u)^2}{g(u)}-C_{\mathrm{in}}\nu(u)\right)
+ \le C_{\mathrm{out}}+C_{\mathrm{in}}-1.
+\end{equation}
+The empty set is allowed. If $g\ge\nu/R$, the stronger bound $\CC(\nu\otimes\sigma,H)\le\max\{R,C_{\mathrm{in}}\}$ holds. Repeated concatenation therefore adds at most the capacities' excesses above one.
+\end{lemma}
+\begin{proof}
+Fix the proper outer prefixes $A$ selected by a cut. In every outer leaf subtree not covered by $A$, an optimal inner cut contributes $C_{\mathrm{in}}\nu(x)$. Filling all those subtrees gives the displayed equality, including zero-mass regions. Exact outer leaves imply
+\[
+ \sum_{u\in A}\frac{\nu(u)^2}{g(u)}+1-\nu(A)\le C_{\mathrm{out}}.
+\]
+Since $C_{\mathrm{in}}\ge1$ (the root cut has value one), substitution proves the additive upper bound. If $\nu(u)^2/g(u)\le R\nu(u)$, the same formula gives the bound by the maximum. The assertion for repeated concatenation follows by induction.
+\end{proof}
+
+\begin{theorem}[Sequential composition]\label{thm:composition}
+Let $\mathcal P$ be a known finite class on $\bits^d$. Let $\nu\in\mathcal P$ have an arbitrary pointwise factor-$R$ guide $g$ with exact leaves. Let $\sigma$ on $\bits^n$ have a safe guide $h\le R\sigma$, exact leaves, and stopped capacity at most $C$. For the product guide~\eqref{eq:composition-guide},
+\begin{equation}\label{eq:composition-budgets}
+ H\le R\mu,\qquad \CC(\mu,H)\le\max\{R,C\},\qquad
+ \DD_R(\mu,H)=\DD_R(\sigma,h).
+\end{equation}
+
+Now set $R=9/4$ and take $(\sigma,h)=(\mu_\theta,h_\theta)$ from Section~\ref{sec:construction}, with $M=4^m$ and $\alpha=2^{-m}$. Let $Q_\otimes(\mathcal P,m,\delta)$ denote the minimax query complexity of the class $\{\nu\otimes\mu_\theta:\nu\in\mathcal P,\ \theta\in\bits^{2m}\}$ over precisely the product guides~\eqref{eq:composition-guide}. For $\alpha<\delta<1$,
+\begin{equation}\label{eq:composition-sampling}
+ Q_{\mathrm{pw}}(\mathcal P,\delta)
+ \le Q_\otimes(\mathcal P,m,\delta)
+ \le Q_{\mathrm{pw}}(\mathcal P,\delta-\alpha).
+\end{equation}
+Every product instance has minimum coherent correction mass $d_m$. A procedure with cap $q$ returning a fully known correction of mass at most $B\ge d_m$ has uniformly guaranteed success at most
+\begin{equation}\label{eq:composition-cert}
+ \min\left\{1,\frac{q+\lfloor B/d_m\rfloor}{M}\right\}.
+\end{equation}
+Optimal-mass certification with certainty has query complexity between $M-1$ and $M+|\mathcal P|-2$.
+\end{theorem}
+\begin{proof}
+Safety and exact leaves follow directly. Lemma~\ref{lem:capacity-concatenation} gives the capacity bound, including cuts of mixed depths and zero-mass subtrees.
+
+The outer additive defects vanish. Below an outer leaf $x$, every defect is $\nu(x)$ times the corresponding inner defect. Each cut therefore has demand at most $\DD_R(\sigma,h)\sum_x\nu(x)$. Taking a maximizing inner cut in every positive-mass outer subtree attains equality. An optimal inner correction $\lambda$ gives the product correction $\nu\otimes\lambda$.
+
+For the upper bound in~\eqref{eq:composition-sampling}, sample $\nu$ to error $\delta-\alpha$ using outer queries, and append an independent free draw from $U_n$. The product error is at most $\delta$, since $\TV(\sigma,U_n)\le\alpha$. For the lower bound, fix $\theta$ publicly. Any query to $H$ can be simulated using at most one query to $g$: a long query uses $g(x)h_\theta(v)$. Projection of the output onto its first $d$ bits gives a $\delta$-accurate sample from $\nu$.
+
+For certification, fix $\nu$ and $g$ publicly instead. Every query to $H$ is simulated by at most one equality query about $\theta$. At each prefix $x\theta$, a valid correction needs mass at least $\nu(x)d_m$. Summing over outer leaves, it needs mass at least $d_m$ on the set of strings whose inner key is $\theta$. Those sets are disjoint for different keys. The all-negative transcript thus certifies at most $\lfloor B/d_m\rfloor$ untested keys, proving~\eqref{eq:composition-cert}. For the upper bound, identify $\nu$ with at most $|\mathcal P|-1$ distinguishing queries at depth $d$. Choose a known positive-mass outer leaf, identify the inner key with at most $M-1$ queries, and return $\nu\otimes d_m\delta_{x_\theta}$.
+\end{proof}
+
+\begin{corollary}[Fixed-error sampling with an exponential certificate cost]\label{cor:fixed-cert}
+For all sufficiently large $m$, there is a full-support class on $4m+2$ bits, of logarithmic cardinality $\Theta(m)$, and a specified family of safe guides with $R=C=9/4$, for which
+\[
+ Q_\otimes(\mathcal P,m,1/16)=\widetilde\Theta(m^{3/2}),
+ \qquad \DD_{9/4}(\mu,H)=d_m\longrightarrow0.
+\]
+Producing an optimal-mass correction with certainty requires $\Theta(4^m)$ queries. More generally, a fixed mass budget $B$ and success probability $1-\zeta$ require
+\[
+ q\ge(1-\zeta)4^m-2B\,2^m.
+\]
+The sampling rates concern the specified product guides.
+\end{corollary}
+\begin{proof}
+Take the class of Theorem~\ref{pw-thm:parameter} on $d=m$ bits, with the parameters of Appendix~\ref{pw-sec:parameters}; it has at most $\lfloor e^m\rfloor$ members. It may be made full-support by replacing each target and its guide by their $7/8$ mixture with the uniform law and its exact prefix masses. The guide remains pointwise factor $9/4$, and each query to the smoothed guide is simulated by one original query. In the hard-prior proof, the target root predicts the hidden bit with probability at least $3/5$. Smoothing makes this at least $47/80$; error $1/16$ still implies advantage $1/40$ and hence transcript distance at least $1/20$. The proof's bound $65/2048<1/20$ for its small-query regime remains contradictory. Thus the same order of lower bound survives smoothing.
+
+Apply Theorem~\ref{thm:composition} and use $\alpha\le1/32$. Its upper bound is at most $Q_{\mathrm{pw}}(\mathcal P,1/32)$, which is $O(m^{3/2}\log(2m))$ by~\cite[Theorem 3.2]{gmr} at error $1/32$. The lower bound is $\Omega(m^{3/2}/\sqrt{\log(2m)})$. The total length is $m+(3m+2)$ and the class has between $4^m$ and $4^m e^m$ members. The certificate bounds follow from $M-1\le q\le M+e^m-2$ for certainty and $d_m\ge\alpha/2$ for fixed $B$.
+\end{proof}
+
+The inner component is negligible at fixed sampling accuracy. The certificate lower bound concerns a requirement imposed before sampling; the outer task accounts for the fixed-error sampling lower bound.
